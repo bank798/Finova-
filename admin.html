@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FINOVA | Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gradient-premium: linear-gradient(135deg, #8b5cf6 0%, #6366f1 25%, #3b82f6 50%, #06b6d4 100%);
+      --bg: #050611;
+      --panel: rgba(18, 20, 38, .78);
+      --text: #f8f8ff;
+      --muted: #9aa0bd;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .admin-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    .admin-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px; background: var(--panel); border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .admin-logo {
+      font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700;
+      background: var(--gradient-premium); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+      background: transparent; color: #9aa0bd; cursor: pointer; font-weight: 600;
+      font-size: 13px; transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--gradient-premium); color: #fff; border-color: transparent; }
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .panel {
+      background: var(--panel); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+      padding: 24px; margin-bottom: 20px;
+    }
+    .panel h3 { margin-bottom: 16px; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    th { color: #9aa0bd; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .btn {
+      padding: 8px 16px; border-radius: 50px; border: none; cursor: pointer;
+      font-weight: 600; font-size: 12px; transition: all 0.2s; font-family: 'Inter', sans-serif;
+    }
+    .btn-primary { background: var(--gradient-premium); color: #fff; }
+    .btn-sm { padding: 6px 12px; font-size: 11px; }
+    .btn-success { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .btn-warning { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .btn-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .btn-reverse { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .input {
+      padding: 10px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05); color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 13px; outline: none; width: 100%;
+    }
+    .input:focus { border-color: rgba(139, 92, 246, 0.5); }
+    select.input { appearance: none; cursor: pointer; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600;
+      color: #9aa0bd; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .badge { padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .badge-info { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .badge-purple { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+    .message-bubble {
+      background: rgba(255,255,255,0.04); border-radius: 16px; padding: 16px;
+      margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06);
+    }
+    .message-bubble .user { font-weight: 700; color: #a78bfa; }
+    .message-bubble .time { font-size: 11px; color: #6b6b8a; }
+    .message-bubble .reply-box {
+      margin-top: 10px; padding: 10px; border-radius: 10px;
+      background: rgba(16,185,129,0.08); color: #10b981; font-size: 12px;
+      border-left: 3px solid #10b981;
+    }
+    .profile-card {
+      background: rgba(255,255,255,0.03); border-radius: 16px; padding: 20px; margin-bottom: 16px;
+    }
+    .profile-card h4 { margin-bottom: 12px; color: #a78bfa; }
+    .profile-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px; font-size: 13px;
+    }
+    .profile-item label { color: var(--muted); font-size: 11px; display: block; }
+
+    /* Card edit cards */
+    .card-edit-panel {
+      background: rgba(255,255,255,0.03); border-radius: 16px; padding: 20px; margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .card-edit-panel h4 { margin-bottom: 14px; }
+    .card-edit-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .card-badge { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+    .card-badge.mastercard { background: rgba(255,90,60,0.2); color: #ff5a3c; }
+    .card-badge.visa { background: rgba(59,130,246,0.2); color: #3b82f6; }
+    .card-badge.online { background: rgba(16,185,129,0.2); color: #10b981; }
+
+    .toast {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: #fff;
+      padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 600;
+      z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s;
+    }
+    .toast.show { opacity: 1; visibility: visible; }
+    @media (max-width: 768px) {
+      .admin-container { padding: 10px; }
+      table { font-size: 11px; }
+      th, td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+  <div class="admin-container">
+    <div class="admin-header">
+      <div class="admin-logo">FINOVA Admin</div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('users')"><i class="fas fa-users"></i> Users</button>
+        <button class="tab-btn" onclick="switchTab('transactions')"><i class="fas fa-exchange-alt"></i> Transactions</button>
+        <button class="tab-btn" onclick="switchTab('messages')"><i class="fas fa-comments"></i> Messages</button>
+        <button class="tab-btn" onclick="switchTab('notifications')"><i class="fas fa-bell"></i> Notifications</button>
+        <button class="tab-btn" onclick="switchTab('cards')"><i class="fas fa-credit-card"></i> Cards</button>
+        <button class="tab-btn" onclick="switchTab('profiles')"><i class="fas fa-id-card"></i> Profiles</button>
+        <button class="tab-btn" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Settings</button>
+      </div>
+    </div>
+
+    <!-- Users Tab -->
+    <div class="tab-content active" id="tab-users">
+      <div class="panel">
+        <h3>All Users</h3>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Account</th><th>Balance</th><th>PIN</th><th>Actions</th></tr></thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Add Funds (Direct Deposit)</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Select User</label><select class="input" id="fundUserId"></select></div>
+          <div class="form-group"><label>Amount</label><input type="number" class="input" id="fundAmount" placeholder="0.00" step="0.01" min="0.01"></div>
+        </div>
+        <button class="btn btn-primary" onclick="addFunds()"><i class="fas fa-plus"></i> Add Funds</button>
+      </div>
+    </div>
+
+    <!-- Transactions Tab -->
+    <div class="tab-content" id="tab-transactions">
+      <div class="panel"><h3>All Transactions</h3><div style="overflow-x:auto;"><table><thead><tr><th>Date</th><th>User</th><th>Type</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody id="transactionsTable"></tbody></table></div></div>
+    </div>
+
+    <!-- Messages Tab -->
+    <div class="tab-content" id="tab-messages">
+      <div class="panel"><h3>Support Messages</h3><div id="messagesList"></div></div>
+    </div>
+
+    <!-- Notifications Tab -->
+    <div class="tab-content" id="tab-notifications">
+      <div class="panel">
+        <h3>Set Notification for Users</h3>
+        <div class="form-row">
+          <div class="form-group"><label>For User</label><select class="input" id="notifUserId"><option value="all">All Users (Global)</option></select></div>
+          <div class="form-group"><label>Trigger Type</label><select class="input" id="notifType"><option value="send">Send Money</option><option value="transfer">Transfer</option><option value="receive">Receive</option><option value="general">General</option></select></div>
+        </div>
+        <div class="form-group"><label>Notification Message</label><input type="text" class="input" id="notifMessage" placeholder="e.g., Your transfer is under review..."></div>
+        <button class="btn btn-primary" onclick="setNotification()"><i class="fas fa-bell"></i> Set Notification</button>
+      </div>
+      <div class="panel"><h3>Active Notifications</h3><div id="notificationsList"></div></div>
+    </div>
+
+    <!-- Cards Tab (NEW) -->
+    <div class="tab-content" id="tab-cards">
+      <div class="panel">
+        <h3>Select User</h3>
+        <div class="form-group"><select class="input" id="cardUserId" onchange="loadUserCards()"><option value="">-- Select a user --</option></select></div>
+      </div>
+      <div id="cardsEditContainer"></div>
+    </div>
+
+    <!-- Profiles Tab -->
+    <div class="tab-content" id="tab-profiles">
+      <div class="panel"><h3>User Profiles</h3><div id="profilesContainer"></div></div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div class="tab-content" id="tab-settings">
+      <div class="panel">
+        <h3>Bank Settings</h3>
+        <div class="form-group"><label>Bank Name</label><input type="text" class="input" id="bankName" placeholder="FINOVA"></div>
+        <div class="form-group"><label>Telegram Bot Token</label><input type="text" class="input" id="telegramToken" placeholder="123456:ABC-DEF..."></div>
+        <div class="form-group"><label>Telegram Chat ID</label><input type="text" class="input" id="telegramChatId" placeholder="123456789"></div>
+        <button class="btn btn-primary" onclick="updateSettings()"><i class="fas fa-save"></i> Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "https://aurex-b-production-376a.up.railway.app";
+    let allUsers = [];
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message; toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      event.target.classList.add('active');
+      switch(tab) {
+        case 'users': loadUsers(); break;
+        case 'transactions': loadTransactions(); break;
+        case 'messages': loadMessages(); break;
+        case 'notifications': loadNotifications(); break;
+        case 'cards': loadCardUsers(); break;
+        case 'profiles': loadProfiles(); break;
+        case 'settings': loadSettings(); break;
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/users`);
+        const data = await res.json();
+        allUsers = data.users;
+        document.getElementById('usersTable').innerHTML = data.users.map(u => `
+          <tr><td>${u.name}</td><td>${u.email}</td><td>${u.accountNumber}</td>
+          <td>$${u.balance.toFixed(2)}</td>
+          <td><span class="badge ${u.pinSet ? 'badge-success' : 'badge-warning'}">${u.pinSet ? 'Set' : 'Not Set'}</span></td>
+          <td><button class="btn btn-sm btn-success" onclick="showAddFunds('${u.id}')">Add Funds</button></td></tr>`).join('');
+        document.getElementById('fundUserId').innerHTML = data.users.map(u => `<option value="${u.id}">${u.name} (${u.email}) - $${u.balance.toFixed(2)}</option>`).join('');
+        document.getElementById('notifUserId').innerHTML = '<option value="all">All Users (Global)</option>' + data.users.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+      } catch (e) { showToast('Failed to load users'); }
+    }
+
+    function showAddFunds(userId) { document.getElementById('fundUserId').value = userId; document.getElementById('fundAmount').focus(); }
+
+    async function addFunds() {
+      const userId = document.getElementById('fundUserId').value;
+      const amount = document.getElementById('fundAmount').value;
+      if (!amount || amount <= 0) { showToast('Enter valid amount'); return; }
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/add-funds`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, amount: parseFloat(amount) })
+        });
+        const data = await res.json();
+        if (data.success) { showToast(`Direct Deposit of $${amount} processed. New balance: $${data.newBalance.toFixed(2)}`); loadUsers(); document.getElementById('fundAmount').value = ''; }
+        else showToast(data.message);
+      } catch (e) { showToast('Failed to add funds'); }
+    }
+
+    function getStatusBadge(status) {
+      switch(status) {
+        case 'completed': return '<span class="badge badge-success">completed</span>';
+        case 'pending': return '<span class="badge badge-warning">pending</span>';
+        case 'rejected': return '<span class="badge badge-danger">rejected</span>';
+        case 'reversed': return '<span class="badge badge-purple">reversed</span>';
+        default: return `<span class="badge badge-info">${status}</span>`;
+      }
+    }
+
+    function getActionButtons(t) {
+      if (t.status === 'pending') return `<button class="btn btn-sm btn-success" onclick="approveTransaction('${t.id}')">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectTransaction('${t.id}')" style="margin-left:4px;">Reject</button>`;
+      if (t.status === 'completed') return `<button class="btn btn-sm btn-reverse" onclick="reverseTransaction('${t.id}')">Reverse</button>`;
+      return '';
+    }
+
+    async function loadTransactions() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/transactions`);
+        const data = await res.json();
+        document.getElementById('transactionsTable').innerHTML = data.transactions.map(t => `
+          <tr><td>${new Date(t.createdAt).toLocaleString()}</td><td>${t.userId?.slice(0,8)}...</td>
+          <td><span class="badge badge-info">${t.type}</span></td><td>$${parseFloat(t.amount).toFixed(2)}</td>
+          <td>${getStatusBadge(t.status)}</td><td>${getActionButtons(t)}</td></tr>`).join('');
+      } catch (e) { showToast('Failed to load transactions'); }
+    }
+
+    async function approveTransaction(id) {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/approve-transaction`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ transactionId: id }) });
+        const data = await res.json();
+        if (data.success) { showToast('Transaction approved'); loadTransactions(); loadUsers(); }
+        else showToast(data.message || 'Failed');
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function rejectTransaction(id) {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/reject-transaction`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ transactionId: id }) });
+        const data = await res.json();
+        if (data.success) { showToast('Transaction rejected'); loadTransactions(); }
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function reverseTransaction(id) {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/reverse-transaction`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ transactionId: id }) });
+        const data = await res.json();
+        if (data.success) { showToast('Transaction reversed'); loadTransactions(); loadUsers(); }
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function loadMessages() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/messages`);
+        const data = await res.json();
+        document.getElementById('messagesList').innerHTML = data.messages.map(m => `
+          <div class="message-bubble">
+            <div><span class="user">${m.userName}</span> <span class="time">${new Date(m.createdAt).toLocaleString()}</span></div>
+            <p style="margin:8px 0;">${m.message}</p>
+            ${m.reply ? `<div class="reply-box"><strong>Reply:</strong> ${m.reply}</div>` : ''}
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <input type="text" class="input" id="reply-${m.id}" placeholder="Type reply..." style="flex:1;">
+              <button class="btn btn-sm btn-primary" onclick="replyMessage('${m.id}')">Reply</button>
+            </div>
+          </div>`).join('');
+      } catch (e) { showToast('Failed to load messages'); }
+    }
+
+    async function replyMessage(messageId) {
+      const reply = document.getElementById(`reply-${messageId}`).value.trim();
+      if (!reply) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/reply-message`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messageId, reply }) });
+        const data = await res.json();
+        if (data.success) { showToast('Reply sent'); loadMessages(); }
+        else showToast(data.message);
+      } catch (e) { showToast('Failed to reply'); }
+    }
+
+    async function setNotification() {
+      const userId = document.getElementById('notifUserId').value;
+      const type = document.getElementById('notifType').value;
+      const message = document.getElementById('notifMessage').value;
+      if (!message) { showToast('Enter notification message'); return; }
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/set-notification`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId, type, message, global: userId === 'all' }) });
+        const data = await res.json();
+        if (data.success) { showToast('Notification set'); document.getElementById('notifMessage').value = ''; loadNotifications(); }
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function loadNotifications() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/notifications`);
+        const data = await res.json();
+        const list = document.getElementById('notificationsList');
+        if (!data.notifications || data.notifications.length === 0) { list.innerHTML = '<p style="color:var(--muted);">No active notifications.</p>'; return; }
+        list.innerHTML = data.notifications.map(n => `
+          <div style="background:rgba(255,255,255,0.03); border-radius:14px; padding:14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+            <div><strong>${n.type.toUpperCase()}</strong> ${n.global ? '(Global)' : 'User-specific'}<br><small style="color:var(--muted);">${n.message}</small><br><small style="color:#6b6b8a;">${new Date(n.createdAt).toLocaleString()}</small></div>
+            <button class="btn btn-sm btn-danger" onclick="deleteNotification('${n.id}')"><i class="fas fa-trash"></i></button>
+          </div>`).join('');
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function deleteNotification(id) {
+      if (!confirm('Delete?')) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/notifications/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) { showToast('Deleted'); loadNotifications(); }
+      } catch (e) { showToast('Failed'); }
+    }
+
+    // ========== CARDS TAB ==========
+    async function loadCardUsers() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/users`);
+        const data = await res.json();
+        allUsers = data.users;
+        document.getElementById('cardUserId').innerHTML = '<option value="">-- Select a user --</option>' + data.users.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+        document.getElementById('cardsEditContainer').innerHTML = '';
+      } catch (e) { showToast('Failed to load users'); }
+    }
+
+    async function loadUserCards() {
+      const userId = document.getElementById('cardUserId').value;
+      if (!userId) { document.getElementById('cardsEditContainer').innerHTML = ''; return; }
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/user-cards/${userId}`);
+        const data = await res.json();
+        if (data.success && data.cards.length) {
+          renderCardEditor(data.cards, userId);
+        } else {
+          document.getElementById('cardsEditContainer').innerHTML = '<div class="panel"><p style="color:var(--muted);">No cards found for this user.</p></div>';
+        }
+      } catch (e) { showToast('Failed to load cards'); }
+    }
+
+    function renderCardEditor(cards, userId) {
+      const container = document.getElementById('cardsEditContainer');
+      const labels = { mastercard: 'Mastercard', visa: 'Visa', online: 'Online' };
+      const badgeClasses = { mastercard: 'mastercard', visa: 'visa', online: 'online' };
+      container.innerHTML = cards.map(card => `
+        <div class="panel card-edit-panel">
+          <h4><span class="card-badge ${badgeClasses[card.type] || ''}">${labels[card.type] || card.label}</span></h4>
+          <div class="card-edit-grid">
+            <div class="form-group"><label>Cardholder Name</label><input type="text" class="input" id="holder-${card.id}" value="${card.holder || ''}" placeholder="Cardholder name"></div>
+            <div class="form-group"><label>Card Number</label><input type="text" class="input" id="number-${card.id}" value="${card.number || ''}" placeholder="16-digit number" maxlength="19"></div>
+            <div class="form-group"><label>Expiry Date</label><input type="text" class="input" id="expiry-${card.id}" value="${card.expiry || ''}" placeholder="MM/YY" maxlength="5"></div>
+            <div class="form-group"><label>CVC</label><input type="text" class="input" id="cvc-${card.id}" value="${card.cvc || ''}" placeholder="3 digits" maxlength="3"></div>
+            <div class="form-group"><label>Balance</label><input type="number" class="input" id="balance-${card.id}" value="${card.balance || 0}" placeholder="0.00" step="0.01" min="0"></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveCard('${userId}', '${card.id}')" style="margin-top:12px;"><i class="fas fa-save"></i> Save ${labels[card.type] || card.label}</button>
+        </div>
+      `).join('');
+    }
+
+    async function saveCard(userId, cardId) {
+      const updates = {
+        holder: document.getElementById(`holder-${cardId}`).value.trim(),
+        number: document.getElementById(`number-${cardId}`).value.trim(),
+        expiry: document.getElementById(`expiry-${cardId}`).value.trim(),
+        cvc: document.getElementById(`cvc-${cardId}`).value.trim(),
+        balance: parseFloat(document.getElementById(`balance-${cardId}`).value) || 0
+      };
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/update-card`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, cardId, updates })
+        });
+        const data = await res.json();
+        if (data.success) { showToast('Card updated successfully'); loadUserCards(); }
+        else showToast(data.message || 'Failed to update card');
+      } catch (e) { showToast('Failed to update card'); }
+    }
+
+    // ========== PROFILES ==========
+    async function loadProfiles() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/users`);
+        const data = await res.json();
+        const container = document.getElementById('profilesContainer');
+        if (!data.users.length) { container.innerHTML = '<p style="color:var(--muted);">No users found.</p>'; return; }
+        container.innerHTML = data.users.map(u => {
+          const p = u.profile || {};
+          return `<div class="profile-card"><h4>${u.name} (${u.email})</h4><div class="profile-grid">
+            <div class="profile-item"><label>Date of Birth</label> ${p.dob || '-'}</div>
+            <div class="profile-item"><label>Gender</label> ${p.gender || '-'}</div>
+            <div class="profile-item"><label>City</label> ${p.city || '-'}</div>
+            <div class="profile-item"><label>State</label> ${p.state || '-'}</div>
+            <div class="profile-item"><label>SSN</label> ${p.ssn || '-'}</div>
+            <div class="profile-item"><label>Account Type</label> ${p.accountType || '-'}</div>
+            <div class="profile-item"><label>Employment</label> ${p.employment || '-'}</div>
+            <div class="profile-item"><label>Income</label> ${p.income || '-'}</div>
+            <div class="profile-item"><label>Account #</label> ${u.accountNumber}</div>
+            <div class="profile-item"><label>Balance</label> $${u.balance.toFixed(2)}</div>
+          </div></div>`;
+        }).join('');
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/settings`);
+        const data = await res.json();
+        document.getElementById('bankName').value = data.settings.bankName || 'FINOVA';
+        document.getElementById('telegramToken').value = data.settings.telegramBotToken || '';
+        document.getElementById('telegramChatId').value = data.settings.telegramChatId || '';
+      } catch (e) { showToast('Failed'); }
+    }
+
+    async function updateSettings() {
+      const settings = { bankName: document.getElementById('bankName').value, telegramBotToken: document.getElementById('telegramToken').value, telegramChatId: document.getElementById('telegramChatId').value };
+      try {
+        const res = await fetch(`${API_BASE}/api/admin/update-settings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) });
+        const data = await res.json();
+        if (data.success) showToast('Settings updated');
+      } catch (e) { showToast('Failed'); }
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>
