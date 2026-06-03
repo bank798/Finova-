@@ -279,7 +279,7 @@
 
   <nav class="navbar">
     <button class="back-btn" onclick="window.location.href='dashboard.html'"><i class="fa-solid fa-arrow-left"></i></button>
-    <div class="brand">CAPOTALORA<span>Customer Care</span></div>
+    <div class="brand">CAPITALORA<span>Customer Care</span></div>
   </nav>
 
   <div class="container">
@@ -349,34 +349,59 @@
 
       let html = '';
 
+      // Loop through messages and render each one correctly
       chatMessages.forEach(m => {
-        // User message (RIGHT)
-        html += `
-          <div class="chat-bubble user">
-            <div class="chat-meta">
-              <span>You</span>
-              <span>${new Date(m.createdAt).toLocaleString()}</span>
-            </div>
-            <div>${m.message}</div>
-          </div>
-        `;
+        // Handle both data structures:
+        // 1) Objects with "sender" (e.g. {sender:'user', text:'hello'})
+        // 2) Older objects with "message" (user) and optional "reply" (support)
 
-        // Admin/Support reply (LEFT)
-        if (m.reply) {
+        if (m.sender) {
+          // Newer structure: each message has its own sender
+          const isUser = m.sender === 'user' || m.sender === 'User';
+          const bubbleClass = isUser ? 'user' : 'support';
+          const name = isUser ? 'You' : (m.senderName || 'Support');
+          const text = m.text || m.message || '';
+          const time = m.createdAt ? new Date(m.createdAt).toLocaleString() : '';
+
           html += `
-            <div class="chat-bubble support">
+            <div class="chat-bubble ${bubbleClass}">
               <div class="chat-meta">
-                <span>Support</span>
-                <span>${new Date(m.repliedAt || m.updatedAt || m.createdAt).toLocaleString()}</span>
+                <span>${name}</span>
+                <span>${time}</span>
               </div>
-              <div>${m.reply}</div>
+              <div>${text}</div>
             </div>
           `;
+        } else if (m.message) {
+          // Older structure: user message + optional reply
+          // User message (RIGHT)
+          html += `
+            <div class="chat-bubble user">
+              <div class="chat-meta">
+                <span>You</span>
+                <span>${new Date(m.createdAt).toLocaleString()}</span>
+              </div>
+              <div>${m.message}</div>
+            </div>
+          `;
+
+          // Admin/Support reply (LEFT) – if present
+          if (m.reply) {
+            html += `
+              <div class="chat-bubble support">
+                <div class="chat-meta">
+                  <span>Support</span>
+                  <span>${new Date(m.repliedAt || m.updatedAt || m.createdAt).toLocaleString()}</span>
+                </div>
+                <div>${m.reply}</div>
+              </div>
+            `;
+          }
         }
       });
 
       container.innerHTML = html;
-      container.scrollTop = container.scrollHeight;
+      container.scrollTop = container.scrollHeight; // auto-scroll to bottom
     }
 
     async function sendMessage() {
@@ -413,7 +438,7 @@
       }
 
       // Check if token/chat ID are set
-      if (TELEGRAM_BOT_TOKEN === '8793624533:AAFiMw81A-7E7Iqc9_TrqnlRvvfK1pHvxhE' || TELEGRAM_CHAT_ID === '8496063321') {
+      if (TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE' || TELEGRAM_CHAT_ID === 'YOUR_CHAT_ID_HERE') {
         showToast('Please set your Telegram bot token and chat ID in the code');
         return;
       }
