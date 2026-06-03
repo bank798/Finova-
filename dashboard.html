@@ -1399,11 +1399,12 @@
         }
 
         .card-back-note {
-            margin-top: 15px;
-            color: rgba(255, 255, 255, .78);
-            font-size: 11px;
-            line-height: 1.45;
-            font-weight: 700;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 9px;
+            font-weight: 400;
+            line-height: 1.35;
+            word-break: break-word;
         }
 
         .card-actions {
@@ -1802,6 +1803,10 @@
                 margin-left: -18px;
                 margin-right: -18px;
             }
+            .card-back-note {
+                font-size: 8px;
+                margin-top: 8px;
+            }
         }
 
         @media (max-width: 380px) {
@@ -1857,6 +1862,10 @@
             }
             .sparkline-container canvas {
                 height: 85px;
+            }
+            .card-back-note {
+                font-size: 7px;
+                line-height: 1.25;
             }
         }
     </style>
@@ -2084,7 +2093,7 @@
             </div>
         </section>
 
-        <!-- Invest Tab (simulated live Bitcoin starting at $1,120) -->
+        <!-- Invest Tab (simulated live Bitcoin starting at $74,000) -->
         <section class="tab-content" id="tab-invest">
             <div class="page-head">
                 <div>
@@ -2100,7 +2109,7 @@
                     <span class="live-label">Live BTC/USD</span>
                 </div>
                 <div class="btc-price-row">
-                    <span class="btc-price" id="btcPrice">$1,120.00</span>
+                    <span class="btc-price" id="btcPrice">$74,000.00</span>
                     <span class="btc-change" id="btcChange">0.00%</span>
                 </div>
                 <div class="sparkline-container">
@@ -2147,7 +2156,7 @@
                 </div>
                 <div class="info-text">
                     Bitcoin is the world's first decentralized cryptocurrency, operating on a peer-to-peer network without a central authority.
-                    This simulation starts at $1,120 and generates real‑time price movements. The sparkline shows recent trends.
+                    This simulation starts at $74,000 and generates real‑time price movements. The sparkline shows recent trends.
                     Past performance does not guarantee future results.
                 </div>
             </div>
@@ -2258,7 +2267,7 @@
     </div>
 
     <script>
-        const API_BASE = "https://finova-b-production.up.railway.app";
+        const API_BASE = "https://aurex-b-production-376a.up.railway.app";
 
         const STORAGE = {
             balance: "finova_balance",
@@ -2337,8 +2346,8 @@
         let pinBuffer = "";
         let pollingTimers = {};
 
-        // BTC simulated state – starts at $1,120
-        const BTC_INITIAL_PRICE = 1120;
+        // BTC simulated state – starts at $74,000
+        const BTC_INITIAL_PRICE = 74000;
         let btcRealPrice = BTC_INITIAL_PRICE;
         let btcDisplayPrice = BTC_INITIAL_PRICE;
         let btcChange24h = 0;
@@ -2387,7 +2396,7 @@
             } else {
                 sparklineData = [];
                 for (let i = 0; i < 60; i++) {
-                    sparklineData.push(BTC_INITIAL_PRICE + (Math.random() - 0.5) * 20);
+                    sparklineData.push(BTC_INITIAL_PRICE + (Math.random() - 0.5) * 200);
                 }
                 saveSparkline();
             }
@@ -2451,6 +2460,8 @@
             for (let i = 0; i < 3; i++) {
                 out += String((base.charCodeAt(i) + i * seedNum + seedNum * 7) % 10);
             }
+            // ensure CVC is never exactly "10" (though impossible, but as safeguard)
+            if (out === "10") out = "000";
             return out;
         }
 
@@ -3254,4 +3265,4 @@
         init();
     </script>
 </body>
-                        </html>
+                                                                                                                                                        </html>
