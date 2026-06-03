@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>CAPITALORA | Set Transaction PIN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gradient-premium: linear-gradient(135deg, #8b5cf6 0%, #6366f1 25%, #3b82f6 50%, #06b6d4 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #030308;
+      color: #f0f0f5;
+      -webkit-font-smoothing: antialiased;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 50%);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .pin-wrapper {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .pin-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: var(--gradient-premium);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .lock-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 28px;
+      color: #a78bfa;
+    }
+
+    .pin-header h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #e8e8f5;
+      margin-bottom: 8px;
+    }
+
+    .pin-header p {
+      font-size: 13px;
+      color: #8080a8;
+      line-height: 1.5;
+    }
+
+    .pin-dots {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 32px 0;
+    }
+
+    .pin-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+
+    .pin-dot.filled {
+      background: #fff;
+      border-color: #fff;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    }
+
+    .pin-dot.error {
+      background: #ef4444;
+      border-color: #ef4444;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .key {
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .key:active {
+      transform: scale(0.95);
+      background: rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+
+    .key.action {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: #a78bfa;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #8080a8;
+      min-height: 20px;
+    }
+
+    .message.error {
+      color: #ef4444;
+    }
+
+    .message.success {
+      color: #10b981;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--gradient-premium);
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #a78bfa;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+  </style>
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+  <div class="pin-wrapper">
+    <div class="pin-header">
+      <div class="logo">CAPITALORA</div>
+      <div class="lock-icon"><i class="fas fa-lock"></i></div>
+      <h2 id="pinTitle">Set Transaction PIN</h2>
+      <p id="pinSub">Create a 4-digit PIN to authorize your transactions</p>
+    </div>
+
+    <div class="pin-dots">
+      <span class="pin-dot" id="pinDot0"></span>
+      <span class="pin-dot" id="pinDot1"></span>
+      <span class="pin-dot" id="pinDot2"></span>
+      <span class="pin-dot" id="pinDot3"></span>
+    </div>
+
+    <div class="keypad">
+      <button class="key" onclick="pressKey('1')">1</button>
+      <button class="key" onclick="pressKey('2')">2</button>
+      <button class="key" onclick="pressKey('3')">3</button>
+      <button class="key" onclick="pressKey('4')">4</button>
+      <button class="key" onclick="pressKey('5')">5</button>
+      <button class="key" onclick="pressKey('6')">6</button>
+      <button class="key" onclick="pressKey('7')">7</button>
+      <button class="key" onclick="pressKey('8')">8</button>
+      <button class="key" onclick="pressKey('9')">9</button>
+      <button class="key action" onclick="clearPin()"><i class="fas fa-undo"></i></button>
+      <button class="key" onclick="pressKey('0')">0</button>
+      <button class="key action" onclick="deleteKey()"><i class="fas fa-delete-left"></i></button>
+    </div>
+
+    <div class="message" id="message"></div>
+    <div class="spinner" id="spinner"></div>
+
+    <div class="btn-row" style="display:none;" id="confirmRow">
+      <button class="btn btn-primary" onclick="confirmPin()">Confirm PIN</button>
+    </div>
+  </div>
+
+  <script>
+    let pinBuffer = '';
+    let firstPin = '';
+    let isConfirming = false;
+    const API_BASE = "https://aurex-b-production-376a.up.railway.app";
+    const userId = new URLSearchParams(window.location.search).get('userId') || localStorage.getItem('finova_temp_user_id');
+
+    function showToast(message, type = '') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast ' + type + ' show';
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function pressKey(digit) {
+      if (pinBuffer.length >= 4) return;
+      pinBuffer += digit;
+      updateDots();
+      
+      if (pinBuffer.length === 4) {
+        if (!isConfirming) {
+          firstPin = pinBuffer;
+          isConfirming = true;
+          pinBuffer = '';
+          document.getElementById('pinTitle').textContent = 'Confirm PIN';
+          document.getElementById('pinSub').textContent = 'Re-enter your 4-digit PIN';
+          document.getElementById('message').textContent = '';
+          document.getElementById('message').className = 'message';
+          setTimeout(() => updateDots(), 100);
+        } else {
+          document.getElementById('confirmRow').style.display = 'flex';
+        }
+      }
+    }
+
+    function deleteKey() {
+      pinBuffer = pinBuffer.slice(0, -1);
+      updateDots();
+      document.getElementById('confirmRow').style.display = 'none';
+    }
+
+    function clearPin() {
+      pinBuffer = '';
+      firstPin = '';
+      isConfirming = false;
+      document.getElementById('pinTitle').textContent = 'Set Transaction PIN';
+      document.getElementById('pinSub').textContent = 'Create a 4-digit PIN to authorize your transactions';
+      document.getElementById('message').textContent = '';
+      document.getElementById('message').className = 'message';
+      document.getElementById('confirmRow').style.display = 'none';
+      updateDots();
+    }
+
+    function updateDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById(`pinDot${i}`);
+        dot.classList.remove('filled', 'error');
+        if (i < pinBuffer.length) dot.classList.add('filled');
+      }
+    }
+
+    async function confirmPin() {
+      if (pinBuffer !== firstPin) {
+        document.getElementById('message').textContent = 'PINs do not match. Try again.';
+        document.getElementById('message').className = 'message error';
+        pinBuffer = '';
+        isConfirming = false;
+        document.getElementById('pinTitle').textContent = 'Set Transaction PIN';
+        document.getElementById('pinSub').textContent = 'Create a 4-digit PIN to authorize your transactions';
+        document.getElementById('confirmRow').style.display = 'none';
+        updateDots();
+        document.querySelectorAll('.pin-dot').forEach(d => d.classList.add('error'));
+        setTimeout(() => document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error')), 500);
+        return;
+      }
+
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('confirmRow').style.display = 'none';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/set-pin`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, pin: pinBuffer })
+        });
+
+        const data = await response.json();
+        document.getElementById('spinner').style.display = 'none';
+
+        if (data.success) {
+          document.getElementById('message').textContent = 'PIN set successfully! Redirecting...';
+          document.getElementById('message').className = 'message success';
+          localStorage.removeItem('finova_temp_user_id');
+          showToast('PIN set successfully!', 'success');
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 1500);
+        } else {
+          document.getElementById('message').textContent = data.message || 'Failed to set PIN';
+          document.getElementById('message').className = 'message error';
+          showToast(data.message || 'Error setting PIN', 'error');
+          clearPin();
+        }
+      } catch (error) {
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('message').textContent = 'Connection error. Please try again.';
+        document.getElementById('message').className = 'message error';
+        showToast('Connection error', 'error');
+        clearPin();
+      }
+    }
+
+    window.addEventListener('beforeunload', (e) => {
+      if (isConfirming || pinBuffer) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+</body>
+</html>
