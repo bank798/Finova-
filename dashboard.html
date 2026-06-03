@@ -2341,12 +2341,12 @@
         const BTC_INITIAL_PRICE = 1120;
         let btcRealPrice = BTC_INITIAL_PRICE;
         let btcDisplayPrice = BTC_INITIAL_PRICE;
-        let btcChange24h = 0; // percentage change from initial price
+        let btcChange24h = 0;
         let btcHigh24h = BTC_INITIAL_PRICE;
         let btcLow24h = BTC_INITIAL_PRICE;
-        let btcMarketCap = BTC_INITIAL_PRICE * 19500000; // approx supply
-        let btcVolume = BTC_INITIAL_PRICE * 350000; // rough volume
-        let sparklineData = []; // will be populated by simulation
+        let btcMarketCap = BTC_INITIAL_PRICE * 19500000;
+        let btcVolume = BTC_INITIAL_PRICE * 350000;
+        let sparklineData = [];
         let btcSimInterval = null;
         let investTabActive = false;
         let lastBtcDirection = null;
@@ -2385,7 +2385,6 @@
             if (saved.length > 0) {
                 sparklineData = saved;
             } else {
-                // seed initial sparkline with 60 points around 1120
                 sparklineData = [];
                 for (let i = 0; i < 60; i++) {
                     sparklineData.push(BTC_INITIAL_PRICE + (Math.random() - 0.5) * 20);
@@ -2446,9 +2445,12 @@
         }
 
         function stableCvc(seed) {
+            const seedNum = parseInt(seed);
             const base = `${accountNumber}${seed}`;
             let out = "";
-            for (let i = 0; i < 3; i++) out += String((base.charCodeAt(i) + i * 3) % 10);
+            for (let i = 0; i < 3; i++) {
+                out += String((base.charCodeAt(i) + i * seedNum + seedNum * 7) % 10);
+            }
             return out;
         }
 
@@ -2520,33 +2522,27 @@
             return "$" + price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        // ========== BTC LIVE SIMULATION (starts at $1,120) ==========
+        // ========== BTC LIVE SIMULATION ==========
         function simulateBtcStep() {
-            // random walk: volatility roughly 0.2% per step
             const volatility = 0.002;
             const changePercent = (Math.random() - 0.5) * 2 * volatility;
             const changeAmount = btcRealPrice * changePercent;
             const newPrice = btcRealPrice + changeAmount;
 
-            // update direction flash
             if (newPrice > btcRealPrice) lastBtcDirection = "up";
             else if (newPrice < btcRealPrice) lastBtcDirection = "down";
 
             btcRealPrice = newPrice;
-            btcDisplayPrice = btcRealPrice; // direct mapping
+            btcDisplayPrice = btcRealPrice;
 
-            // update 24h high/low
             if (btcRealPrice > btcHigh24h) btcHigh24h = btcRealPrice;
             if (btcRealPrice < btcLow24h) btcLow24h = btcRealPrice;
 
-            // recalc change from initial price (1,120)
             btcChange24h = ((btcRealPrice - BTC_INITIAL_PRICE) / BTC_INITIAL_PRICE) * 100;
 
-            // approximate market cap and volume
             btcMarketCap = btcRealPrice * 19500000;
             btcVolume = btcRealPrice * 350000 * (0.8 + Math.random() * 0.4);
 
-            // add to sparkline data (keep last 60 points)
             sparklineData.push(btcRealPrice);
             if (sparklineData.length > 60) sparklineData = sparklineData.slice(-60);
             saveSparkline();
@@ -2557,7 +2553,6 @@
 
         function startBtcSimulation() {
             if (btcSimInterval) clearInterval(btcSimInterval);
-            // update every second for smooth live movement
             btcSimInterval = setInterval(simulateBtcStep, 1000);
         }
 
@@ -2569,10 +2564,8 @@
         }
 
         function refreshBtcNow() {
-            // force a step immediately, then resume normal interval
             simulateBtcStep();
             toast("BTC price updated!", "success");
-            // restart simulation to ensure interval is running
             stopBtcSimulation();
             startBtcSimulation();
         }
@@ -2588,7 +2581,6 @@
             if (!el) return;
             const price = btcDisplayPrice;
             el.textContent = formatBtcPrice(price);
-            // optional flash class
             if (lastBtcDirection === "up") {
                 el.classList.add("flash-up");
                 el.classList.remove("flash-down");
@@ -2644,7 +2636,6 @@
             const min = Math.min(...data);
             const max = Math.max(...data);
             const range = max - min || 1;
-            const paddingX = 0;
             const paddingY = 18;
 
             const xStep = displayWidth / (data.length - 1);
@@ -2703,7 +2694,6 @@
 
         function onInvestTabActivated() {
             investTabActive = true;
-            // ensure simulation is running and sparkline is drawn
             if (!btcSimInterval) startBtcSimulation();
             updateBtcUI();
             setTimeout(() => drawSparkline(), 50);
@@ -2711,7 +2701,6 @@
 
         function onInvestTabDeactivated() {
             investTabActive = false;
-            // we keep simulation running in background so data continues
         }
 
         // ========== BACKEND INTEGRATION ==========
@@ -3265,4 +3254,4 @@
         init();
     </script>
 </body>
-</html>
+        </html>
