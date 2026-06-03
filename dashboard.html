@@ -2337,7 +2337,8 @@
         let transactions = readJson(STORAGE.tx, []);
         let cards = readJson(STORAGE.cards, []);
         let currentCurrency = localStorage.getItem(STORAGE.currency) || "USD";
-        let accountNumber = localStorage.getItem(STORAGE.account) || createAccountNumber();
+        // ---------- FIX: accountNumber persistence ----------
+        let accountNumber = getPersistentAccountNumber();
         let balanceHidden = false;
         let selectedTransferFrom = "main";
         let selectedTransferTo = "mastercard";
@@ -2363,6 +2364,25 @@
             localStorage.setItem(STORAGE.created, new Date().toISOString());
         }
 
+        // ---------- ACCOUNT NUMBER LOGIC (PERSISTENT) ----------
+        function getPersistentAccountNumber() {
+            // 1. Check if the stored user object has an account number (from backend)
+            const user = readJson(STORAGE.user, {});
+            if (user.accountNumber && typeof user.accountNumber === 'string' && user.accountNumber.startsWith('20')) {
+                localStorage.setItem(STORAGE.account, user.accountNumber);
+                return user.accountNumber;
+            }
+            // 2. Fallback to dedicated localStorage key
+            const stored = localStorage.getItem(STORAGE.account);
+            if (stored && stored.startsWith('20') && stored.length >= 10) {
+                return stored;
+            }
+            // 3. Only generate a new one if absolutely nothing exists
+            const num = "20" + Math.floor(10000000 + Math.random() * 90000000);
+            localStorage.setItem(STORAGE.account, num);
+            return num;
+        }
+
         function readNumber(key, fallback) {
             const value = parseFloat(localStorage.getItem(key));
             return Number.isFinite(value) ? value : fallback;
@@ -2382,6 +2402,8 @@
             localStorage.setItem(STORAGE.tx, JSON.stringify(transactions));
             localStorage.setItem(STORAGE.currency, currentCurrency);
             localStorage.setItem(STORAGE.cards, JSON.stringify(cards));
+            // Ensure account number is also saved to its dedicated key
+            localStorage.setItem(STORAGE.account, accountNumber);
         }
 
         function saveSparkline() {
@@ -2399,12 +2421,6 @@
                 }
                 saveSparkline();
             }
-        }
-
-        function createAccountNumber() {
-            const num = "20" + Math.floor(10000000 + Math.random() * 90000000);
-            localStorage.setItem(STORAGE.account, num);
-            return num;
         }
 
         function currentUser() {
@@ -2459,7 +2475,6 @@
             for (let i = 0; i < 3; i++) {
                 out += String((base.charCodeAt(i) + i * seedNum + seedNum * 7) % 10);
             }
-            // ensure CVC is never exactly "10" (though impossible, but as safeguard)
             if (out === "10") out = "000";
             return out;
         }
@@ -2722,6 +2737,11 @@
                 const data = await res.json();
                 if (data.success) {
                     balance = data.user.balance || 0;
+                    // Sync account number from backend and persist it
+                    if (data.user.accountNumber) {
+                        accountNumber = data.user.accountNumber;
+                        localStorage.setItem(STORAGE.account, accountNumber);
+                    }
                     if (data.transactions.length) {
                         transactions = data.transactions.map(t => ({
                             id: t.id,
@@ -2738,7 +2758,7 @@
                         cards = data.user.cards;
                     }
                     if (data.user.profile) {
-                        const updatedUser = { ...user, profile: data.user.profile, balance: data.user.balance, cards: data.user.cards || cards };
+                        const updatedUser = { ...user, profile: data.user.profile, balance: data.user.balance, cards: data.user.cards || cards, accountNumber: data.user.accountNumber || accountNumber };
                         localStorage.setItem(STORAGE.user, JSON.stringify(updatedUser));
                     }
                     saveAll();
@@ -2805,6 +2825,15 @@
 
         // ========== INIT ==========
         function init() {
+            // Ensure account number is set from stored user data (highest priority)
+            const user = currentUser();
+            if (user.accountNumber) {
+                accountNumber = user.accountNumber;
+                localStorage.setItem(STORAGE.account, accountNumber);
+            }
+            // Re-evaluate persistence after potential updates
+            accountNumber = getPersistentAccountNumber();
+            
             seedDefaultCards();
             loadSparkline();
             renderCurrencyDropdown();
@@ -3264,4 +3293,4 @@
         init();
     </script>
 </body>
-                                                                                                                                                        </html>
+    </html>
