@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        /* ... ALL EXISTING CSS REMAINS UNCHANGED ... */
         :root {
             --bg: #050611;
             --panel: rgba(18, 20, 38, .78);
@@ -2311,7 +2310,7 @@
             { code: "XOF", symbol: "CFA", name: "West African CFA Franc", rate: 605 }
         ];
 
-        // ---------- HELPERS ----------
+        // ---------- HELPER FUNCTIONS ----------
         function currentUser() {
             try {
                 return JSON.parse(localStorage.getItem(STORAGE.user)) || {};
@@ -2384,7 +2383,7 @@
             return "$" + price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        // ---------- BTC SIMULATION (unchanged) ----------
+        // ---------- BTC SIMULATION ----------
         function simulateBtcStep() {
             const volatility = 0.002;
             const changePercent = (Math.random() - 0.5) * 2 * volatility;
@@ -2560,7 +2559,7 @@
             investTabActive = false;
         }
 
-        // ---------- BACKEND INTEGRATION (ALL STATE FROM SERVER) ----------
+        // ---------- BACKEND INTEGRATION ----------
         async function loadUserFromBackend() {
             const user = currentUser();
             if (!user.id) return;
@@ -2582,7 +2581,6 @@
                         createdAt: t.createdAt
                     }));
 
-                    // Update stored user object with latest (no sensitive cache)
                     const updatedUser = {
                         ...user,
                         balance: balance,
@@ -2644,7 +2642,7 @@
                             updateUI();
                         }
                         if (status !== 'pending') {
-                            await loadUserFromBackend(); // refresh all data
+                            await loadUserFromBackend();
                             updateUI();
                         }
                     }
@@ -2652,7 +2650,7 @@
             }, 10000);
         }
 
-        // ---------- UI UPDATE (pulls from in-memory vars) ----------
+        // ---------- UI UPDATE ----------
         function updateUI() {
             updateBalance();
             updateMetrics();
@@ -2709,7 +2707,6 @@
         }
 
         function clearTransactions() {
-            // We no longer clear transactions locally; we can reload from backend.
             loadUserFromBackend();
             toast("Transaction list refreshed from server.");
         }
@@ -2774,12 +2771,8 @@
             const amount = Number(card.balance || 0);
             if (amount <= 0) { toast("This card has no money to move."); return; }
             openPinModal(async () => {
-                // For now, moving money from card to main is a local operation; ideally we would have a backend endpoint.
-                // Since we don't have one, we'll just do it client-side and reload from backend.
                 card.balance = 0;
                 balance += amount;
-                // We need to send this to the backend, but there's no dedicated route.
-                // As a workaround, we'll call loadUserFromBackend after a delay to sync.
                 await loadUserFromBackend();
                 updateUI();
                 toast(`${money(amount)} moved to main balance.`, "success");
@@ -2852,7 +2845,7 @@
             });
         }
 
-        // Send and Receive (unchanged logic but using server)
+        // Send and Receive
         async function startSendWithPin() {
             const name = value("sendName");
             const acct = value("sendAccount");
@@ -2967,11 +2960,9 @@
         }
 
         function logout() {
-            // Clear ALL localStorage keys related to this app
             localStorage.removeItem(STORAGE.user);
             localStorage.removeItem(STORAGE.currency);
             localStorage.removeItem(STORAGE.btcSparkline);
-            // Also clear any old keys that might exist
             localStorage.removeItem("finova_balance");
             localStorage.removeItem("finova_transactions");
             localStorage.removeItem("finova_cards");
@@ -3055,6 +3046,31 @@
             toast(`Currency changed to ${code}`, "success");
         }
 
+        // ---------- MISSING: SWITCH TAB FUNCTION (FIXED) ----------
+        function switchTab(tab) {
+            if (investTabActive && tab !== "invest") onInvestTabDeactivated();
+
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+            document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
+
+            const content = document.getElementById(`tab-${tab}`);
+            if (content) content.classList.add("active");
+
+            const mainButton = document.getElementById(`tabBtn-${tab}`);
+            if (mainButton) {
+                mainButton.classList.add("active");
+            } else if (tab === "receive" || tab === "transfer") {
+                document.getElementById("tabBtn-send")?.classList.add("active");
+            }
+
+            if (tab === "invest") {
+                onInvestTabActivated();
+            }
+
+            updateUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
         // ---------- INIT ----------
         async function init() {
             const savedSparkline = localStorage.getItem(STORAGE.btcSparkline);
@@ -3072,7 +3088,6 @@
                 await loadUserFromBackend();
                 accountNumber = user.accountNumber || accountNumber;
             } else {
-                // No user – redirect to login (just in case)
                 window.location.href = "login.html";
                 return;
             }
@@ -3106,4 +3121,4 @@
         init();
     </script>
 </body>
-                    </html>
+                                                                    </html>
