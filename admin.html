@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ... all existing CSS from the original admin.html (unchanged) ... */
+        /* I'm including the complete CSS block for completeness */
         :root {
             --bg: #03050f;
             --surface: rgba(255, 255, 255, 0.025);
@@ -29,7 +31,6 @@
             --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             --font-mono: 'Space Grotesk', sans-serif;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         body {
@@ -167,7 +168,7 @@
             -webkit-overflow-scrolling: touch;
             border-radius: var(--radius-sm);
         }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 800px; }
         th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
         th {
             color: var(--text-muted);
@@ -295,8 +296,6 @@
         .profile-card h4 { margin-bottom: 13px; color: #a78bfa; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; }
         .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 13px; }
         .profile-item label { color: var(--text-muted); font-size: 10.5px; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-
-        /* Card Edit Panels */
         .card-edit-panel {
             background: var(--surface);
             border-radius: var(--radius);
@@ -322,8 +321,6 @@
         .card-badge.mastercard { background: rgba(255, 90, 60, 0.15); color: #ff7a5c; }
         .card-badge.visa { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
         .card-badge.online { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-
-        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -344,7 +341,6 @@
             white-space: nowrap;
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-
         .notif-item {
             background: var(--surface-hover);
             border-radius: var(--radius);
@@ -363,6 +359,10 @@
         .notif-item small { color: var(--text-muted); font-size: 11px; }
         .empty-state { color: var(--text-muted); padding: 20px; text-align: center; font-size: 13px; letter-spacing: -0.01em; }
 
+        /* Edit transaction inline form */
+        .tx-edit-row td { padding: 8px; background: rgba(139, 92, 246, 0.05); }
+        .tx-edit-row input { width: 100%; }
+
         @media (max-width: 768px) {
             .admin-container { padding: 8px 10px 30px; }
             .admin-header { padding: 12px 16px; border-radius: var(--radius); gap: 10px; top: 6px; }
@@ -371,7 +371,7 @@
             .tab-btn i { margin-right: 3px; font-size: 10px; }
             .panel { padding: 16px; border-radius: var(--radius); margin-bottom: 12px; }
             .panel h3 { font-size: 14px; margin-bottom: 12px; }
-            table { font-size: 11px; min-width: 500px; }
+            table { font-size: 11px; min-width: 700px; }
             th, td { padding: 8px 10px; }
             .btn { padding: 7px 14px; font-size: 11px; }
             .btn-sm { padding: 5px 10px; font-size: 10px; }
@@ -432,7 +432,7 @@
                 <h3>All Transactions</h3>
                 <div class="table-wrap">
                     <table>
-                        <thead><tr><th>Date</th><th>User</th><th>Type</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+                        <thead><tr><th>Date</th><th>User</th><th>Type</th><th>Amount</th><th>Status</th><th>Reason</th><th>Actions</th></tr></thead>
                         <tbody id="transactionsTable"></tbody>
                     </table>
                 </div>
@@ -494,7 +494,7 @@
     </div>
 
     <script>
-        const API_BASE = "https://finova-b-production.up.railway.app"; // keep as needed
+        const API_BASE = "https://finova-b-production.up.railway.app";
         let allUsers = [];
 
         function showToast(message) {
@@ -581,21 +581,122 @@
         }
 
         function getActionButtons(t) {
-            if (t.status === 'pending')
-                return `<button class="btn btn-sm btn-success" onclick="approveTransaction('${t.id}')">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectTransaction('${t.id}')" style="margin-left:4px;">Reject</button>`;
-            if (t.status === 'completed')
-                return `<button class="btn btn-sm btn-reverse" onclick="reverseTransaction('${t.id}')">Reverse</button>`;
-            return '';
+            let buttons = '';
+            if (t.status === 'pending') {
+                buttons += `<button class="btn btn-sm btn-success" onclick="approveTransaction('${t.id}')">Approve</button> `;
+                buttons += `<button class="btn btn-sm btn-danger" onclick="rejectTransaction('${t.id}')">Reject</button> `;
+            }
+            if (t.status === 'completed') {
+                buttons += `<button class="btn btn-sm btn-reverse" onclick="reverseTransaction('${t.id}')">Reverse</button> `;
+            }
+            buttons += `<button class="btn btn-sm btn-warning" onclick="toggleEditTx('${t.id}')"><i class="fas fa-pen"></i> Edit</button>`;
+            return buttons;
         }
+
+        // Transaction editing
+        let editingTxId = null;
+
+        function toggleEditTx(txId) {
+            if (editingTxId === txId) {
+                cancelEditTx();
+                return;
+            }
+            cancelEditTx(); // close any existing
+            editingTxId = txId;
+            renderEditRow(txId);
+        }
+
+        function cancelEditTx() {
+            if (editingTxId) {
+                const row = document.getElementById(`tx-row-${editingTxId}`);
+                if (row) row.style.display = '';
+                const editRow = document.getElementById(`tx-edit-${editingTxId}`);
+                if (editRow) editRow.remove();
+                editingTxId = null;
+            }
+        }
+
+        function renderEditRow(txId) {
+            const tx = allTransactions?.find(t => t.id === txId);
+            if (!tx) return;
+            const row = document.getElementById(`tx-row-${txId}`);
+            if (!row) return;
+            row.style.display = 'none';
+
+            const tbody = document.getElementById('transactionsTable');
+            const editRow = document.createElement('tr');
+            editRow.id = `tx-edit-${txId}`;
+            editRow.className = 'tx-edit-row';
+            editRow.innerHTML = `
+                <td colspan="7">
+                    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                        <div style="flex:1; min-width:180px;">
+                            <label style="font-size:10px; color:var(--text-muted);">Date/Time</label>
+                            <input type="datetime-local" class="input" id="edit-date-${txId}" value="${tx.createdAt ? new Date(tx.createdAt).toISOString().slice(0,16) : ''}" style="width:100%;">
+                        </div>
+                        <div style="flex:2; min-width:200px;">
+                            <label style="font-size:10px; color:var(--text-muted);">Reason / Description</label>
+                            <input type="text" class="input" id="edit-reason-${txId}" value="${tx.adminMessage || ''}" placeholder="Reason for transaction" style="width:100%;">
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:flex-end;">
+                            <button class="btn btn-sm btn-primary" onclick="saveEditTx('${txId}')"><i class="fas fa-save"></i> Save</button>
+                            <button class="btn btn-sm btn-soft" onclick="cancelEditTx()">Cancel</button>
+                        </div>
+                    </div>
+                </td>
+            `;
+            row.after(editRow);
+        }
+
+        async function saveEditTx(txId) {
+            const newDate = document.getElementById(`edit-date-${txId}`).value;
+            const reason = document.getElementById(`edit-reason-${txId}`).value;
+            if (!newDate) { showToast('Please select a date'); return; }
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/update-transaction`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        transactionId: txId,
+                        newDate,
+                        adminMessage: reason
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast('Transaction updated');
+                    cancelEditTx();
+                    loadTransactions();
+                } else {
+                    showToast(data.message || 'Failed to update');
+                }
+            } catch (e) { showToast('Error saving transaction'); }
+        }
+
+        let allTransactions = [];
 
         async function loadTransactions() {
             try {
                 const res = await fetch(`${API_BASE}/api/admin/transactions`);
                 const data = await res.json();
-                document.getElementById('transactionsTable').innerHTML = data.transactions.map(t => `
-                    <tr><td>${new Date(t.createdAt).toLocaleString()}</td><td>${t.userId?.slice(0,8)}...</td>
-                    <td><span class="badge badge-info">${t.type}</span></td><td>$${parseFloat(t.amount).toFixed(2)}</td>
-                    <td>${getStatusBadge(t.status)}</td><td>${getActionButtons(t)}</td></tr>`).join('');
+                allTransactions = data.transactions;
+                document.getElementById('transactionsTable').innerHTML = data.transactions.map(t => {
+                    const dateStr = new Date(t.createdAt).toLocaleString();
+                    const shortUserId = t.userId ? t.userId.slice(0,8) + '...' : 'N/A';
+                    const reason = t.adminMessage || t.note || '';
+                    return `
+                        <tr id="tx-row-${t.id}">
+                            <td>${dateStr}</td>
+                            <td>${shortUserId}</td>
+                            <td><span class="badge badge-info">${t.type}</span></td>
+                            <td>$${parseFloat(t.amount).toFixed(2)}</td>
+                            <td>${getStatusBadge(t.status)}</td>
+                            <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis;">${reason}</td>
+                            <td>${getActionButtons(t)}</td>
+                        </tr>`;
+                }).join('');
+                // Attach edit handlers
+                editingTxId = null;
             } catch (e) { showToast('Failed to load transactions'); }
         }
 
@@ -636,6 +737,7 @@
             } catch (e) { showToast('Failed'); }
         }
 
+        // ... rest of existing functions (loadMessages, replyMessage, setNotification, etc.) unchanged ...
         async function loadMessages() {
             try {
                 const res = await fetch(`${API_BASE}/api/admin/messages`);
