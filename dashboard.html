@@ -1246,45 +1246,38 @@
             text-transform: uppercase;
         }
 
+        /* Updated network logo styles */
         .network-logo {
             min-width: 72px;
             text-align: right;
-            font-family: "Space Grotesk", Inter, sans-serif;
-            font-weight: 900;
-            letter-spacing: -.03em;
-            text-transform: uppercase;
-            line-height: .95;
-        }
-
-        .network-logo.visa-logo {
-            font-size: 23px;
-            font-style: italic;
-        }
-
-        .network-logo.master-logo {
             display: flex;
-            justify-content: flex-end;
             align-items: center;
-            gap: 0;
+            justify-content: flex-end;
         }
 
-        .mc-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 999px;
-            display: inline-block;
-            background: rgba(255, 90, 60, .92);
+        .network-logo i {
+            font-size: 28px;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,.3));
         }
 
-        .mc-circle:last-child {
-            margin-left: -9px;
-            background: rgba(255, 190, 60, .92);
-            mix-blend-mode: screen;
+        .network-logo.master-logo i {
+            color: #ff5a3c;
         }
 
-        .network-logo.online-logo {
-            font-size: 17px;
-            letter-spacing: .02em;
+        .network-logo.visa-logo i {
+            color: #1a1f71;
+        }
+
+        .network-logo.online-logo i {
+            font-size: 18px;
+            color: #34d399;
+        }
+        .network-logo.online-logo span {
+            margin-left: 4px;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: .08em;
+            color: #34d399;
         }
 
         .card-chip-row {
@@ -2695,7 +2688,23 @@
         }
         function clearTransactions() { loadUserFromBackend(); toast("Transaction list refreshed from server."); }
 
-        // ---------- CARDS RENDERING (with realistic bank details) ----------
+        // ---------- CARDS RENDERING (with real bank logos) ----------
+        function networkLogo(card) {
+            if (card.type === "mastercard") {
+                return `<div class="network-logo master-logo" aria-label="Mastercard">
+                    <i class="fab fa-cc-mastercard"></i>
+                </div>`;
+            }
+            if (card.type === "visa") {
+                return `<div class="network-logo visa-logo" aria-label="Visa">
+                    <i class="fab fa-cc-visa"></i>
+                </div>`;
+            }
+            return `<div class="network-logo online-logo" aria-label="Online Card">
+                <i class="fas fa-credit-card"></i><span>ONLINE</span>
+            </div>`;
+        }
+
         function renderCards() {
             document.getElementById("cardholderPreview").textContent = firstAndLastName();
             const list = document.getElementById("cardsList");
@@ -2715,8 +2724,7 @@
                                 </div>
                                 <div class="card-chip-row">
                                     <span class="card-chip"></span>
-                                    <span class="card-type-pill">${sanitize(card.cardKind)}</span>
-                                    <span class="card-hologram"></span>
+                                    <span class="card-type-pill">${sanitize(card.label || card.type)}</span>
                                 </div>
                                 <div class="card-number">${formatCardNumber(card.number)}</div>
                                 <div class="card-bottom">
@@ -2752,12 +2760,6 @@
                     </div>
                 </div>`;
             }).join("");
-        }
-
-        function networkLogo(card) {
-            if (card.type === "mastercard") return `<div class="network-logo master-logo" aria-label="Mastercard"><span class="mc-circle"></span><span class="mc-circle"></span></div>`;
-            if (card.type === "visa") return `<div class="network-logo visa-logo">VISA</div>`;
-            return `<div class="network-logo online-logo">ONLINE</div>`;
         }
 
         function flipCard(id) { document.getElementById(`flip-${id}`)?.classList.toggle("flipped"); }
@@ -3075,4 +3077,4 @@
         init();
     </script>
 </body>
-                    </html>
+                                                                       </html>
