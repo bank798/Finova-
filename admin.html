@@ -30,15 +30,8 @@
             --font-mono: 'Space Grotesk', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
@@ -48,7 +41,6 @@
             letter-spacing: -0.01em;
             overflow-x: hidden;
         }
-
         body::before {
             content: '';
             position: fixed;
@@ -77,7 +69,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .admin-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -85,7 +76,6 @@
             position: relative;
             z-index: 1;
         }
-
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -115,11 +105,7 @@
             letter-spacing: -0.03em;
             white-space: nowrap;
         }
-        .tabs {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
         .tab-btn {
             padding: 9px 17px;
             border-radius: var(--radius-pill);
@@ -148,29 +134,16 @@
             border-color: transparent;
             box-shadow: 0 4px 18px var(--accent-glow), 0 0 0 4px rgba(139, 92, 246, 0.08);
         }
-        .tab-btn i {
-            margin-right: 5px;
-            font-size: 11px;
-        }
-
+        .tab-btn i { margin-right: 5px; font-size: 11px; }
         .tab-content {
             display: none;
             animation: fadeSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
         @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         .panel {
             background: var(--surface);
             border-radius: var(--radius-lg);
@@ -189,25 +162,13 @@
             letter-spacing: -0.02em;
             color: var(--text);
         }
-
         .table-wrap {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             border-radius: var(--radius-sm);
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            min-width: 600px;
-        }
-        th,
-        td {
-            padding: 11px 14px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+        th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
         th {
             color: var(--text-muted);
             font-size: 10.5px;
@@ -216,16 +177,9 @@
             font-weight: 700;
             background: rgba(255, 255, 255, 0.015);
         }
-        tbody tr {
-            transition: background var(--transition);
-        }
-        tbody tr:hover {
-            background: var(--surface-hover);
-        }
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
+        tbody tr { transition: background var(--transition); }
+        tbody tr:hover { background: var(--surface-hover); }
+        tbody tr:last-child td { border-bottom: none; }
         .btn {
             padding: 9px 18px;
             border-radius: var(--radius-pill);
@@ -243,64 +197,23 @@
             -webkit-tap-highlight-color: transparent;
             white-space: nowrap;
         }
-        .btn i {
-            font-size: 11px;
-        }
-        .btn:active {
-            transform: scale(0.96);
-        }
+        .btn i { font-size: 11px; }
+        .btn:active { transform: scale(0.96); }
         .btn-primary {
             background: var(--gradient);
             color: #fff;
             box-shadow: 0 4px 16px var(--accent-glow);
         }
-        .btn-primary:hover {
-            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4);
-            transform: translateY(-1px);
-        }
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 11px;
-            border-radius: var(--radius-pill);
-            gap: 4px;
-        }
-        .btn-success {
-            background: rgba(16, 185, 129, 0.12);
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.25);
-        }
-        .btn-success:hover {
-            background: rgba(16, 185, 129, 0.2);
-            box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
-        }
-        .btn-warning {
-            background: rgba(245, 158, 11, 0.12);
-            color: #fbbf24;
-            border: 1px solid rgba(245, 158, 11, 0.25);
-        }
-        .btn-warning:hover {
-            background: rgba(245, 158, 11, 0.2);
-            box-shadow: 0 0 16px rgba(245, 158, 11, 0.15);
-        }
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.12);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.25);
-        }
-        .btn-danger:hover {
-            background: rgba(239, 68, 68, 0.2);
-            box-shadow: 0 0 16px rgba(239, 68, 68, 0.15);
-        }
-        .btn-reverse {
-            background: rgba(139, 92, 246, 0.12);
-            color: #a78bfa;
-            border: 1px solid rgba(139, 92, 246, 0.25);
-        }
-        .btn-reverse:hover {
-            background: rgba(139, 92, 246, 0.2);
-            box-shadow: 0 0 16px rgba(139, 92, 246, 0.2);
-        }
-
+        .btn-primary:hover { box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4); transform: translateY(-1px); }
+        .btn-sm { padding: 6px 12px; font-size: 11px; border-radius: var(--radius-pill); gap: 4px; }
+        .btn-success { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25); }
+        .btn-success:hover { background: rgba(16, 185, 129, 0.2); box-shadow: 0 0 16px rgba(16, 185, 129, 0.15); }
+        .btn-warning { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+        .btn-warning:hover { background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 16px rgba(245, 158, 11, 0.15); }
+        .btn-danger { background: rgba(239, 68, 68, 0.12); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.25); }
+        .btn-danger:hover { background: rgba(239, 68, 68, 0.2); box-shadow: 0 0 16px rgba(239, 68, 68, 0.15); }
+        .btn-reverse { background: rgba(139, 92, 246, 0.12); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.25); }
+        .btn-reverse:hover { background: rgba(139, 92, 246, 0.2); box-shadow: 0 0 16px rgba(139, 92, 246, 0.2); }
         .input {
             padding: 10px 15px;
             border-radius: var(--radius-sm);
@@ -314,14 +227,8 @@
             transition: all var(--transition);
             letter-spacing: -0.01em;
         }
-        .input:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .input::placeholder {
-            color: var(--text-muted);
-        }
+        .input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08); background: rgba(255, 255, 255, 0.05); }
+        .input::placeholder { color: var(--text-muted); }
         select.input {
             appearance: none;
             -webkit-appearance: none;
@@ -331,9 +238,7 @@
             background-position: right 12px center;
             padding-right: 36px;
         }
-        .form-group {
-            margin-bottom: 13px;
-        }
+        .form-group { margin-bottom: 13px; }
         .form-group label {
             display: block;
             margin-bottom: 5px;
@@ -343,12 +248,7 @@
             text-transform: uppercase;
             letter-spacing: 0.06em;
         }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 13px;
-        }
-
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 13px; }
         .badge {
             padding: 4px 10px;
             border-radius: var(--radius-pill);
@@ -363,14 +263,15 @@
         .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; }
         .badge-info { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
         .badge-purple { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-
         .message-bubble {
             background: var(--surface-hover);
             border-radius: var(--radius);
             padding: 16px 18px;
             margin-bottom: 10px;
             border: 1px solid var(--border);
+            transition: border-color var(--transition);
         }
+        .message-bubble:hover { border-color: rgba(255, 255, 255, 0.12); }
         .message-bubble .user { font-weight: 700; color: #a78bfa; font-size: 13px; }
         .message-bubble .time { font-size: 11px; color: var(--text-muted); margin-left: 8px; }
         .message-bubble .reply-box {
@@ -382,46 +283,35 @@
             font-size: 12px;
             border-left: 3px solid #10b981;
         }
-
         .profile-card {
             background: var(--surface);
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 14px;
             border: 1px solid var(--border);
+            transition: border-color var(--transition);
         }
-        .profile-card h4 { margin-bottom: 13px; color: #a78bfa; font-size: 14px; font-weight: 700; }
-        .profile-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 10px;
-            font-size: 13px;
-        }
-        .profile-item label {
-            color: var(--text-muted);
-            font-size: 10.5px;
-            display: block;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
+        .profile-card:hover { border-color: rgba(255, 255, 255, 0.1); }
+        .profile-card h4 { margin-bottom: 13px; color: #a78bfa; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; }
+        .profile-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 13px; }
+        .profile-item label { color: var(--text-muted); font-size: 10.5px; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 
+        /* Card Edit Panels */
         .card-edit-panel {
             background: var(--surface);
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 14px;
             border: 1px solid var(--border);
+            transition: border-color var(--transition);
         }
-        .card-edit-panel h4 { margin-bottom: 13px; font-size: 14px; font-weight: 700; }
-        .card-edit-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 11px;
-        }
+        .card-edit-panel:hover { border-color: rgba(255, 255, 255, 0.1); }
+        .card-edit-panel h4 { margin-bottom: 13px; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+        .card-edit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 11px; }
         .card-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
             padding: 5px 13px;
             border-radius: var(--radius-pill);
             font-size: 11px;
@@ -433,6 +323,7 @@
         .card-badge.visa { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
         .card-badge.online { background: rgba(16, 185, 129, 0.15); color: #34d399; }
 
+        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -452,11 +343,7 @@
             letter-spacing: -0.01em;
             white-space: nowrap;
         }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 
         .notif-item {
             background: var(--surface-hover);
@@ -469,105 +356,12 @@
             gap: 12px;
             border: 1px solid var(--border);
             flex-wrap: wrap;
+            transition: border-color var(--transition);
         }
-        .notif-item strong { color: #c4b5fd; font-size: 12px; }
+        .notif-item:hover { border-color: rgba(255, 255, 255, 0.1); }
+        .notif-item strong { color: #c4b5fd; font-size: 12px; letter-spacing: 0.03em; }
         .notif-item small { color: var(--text-muted); font-size: 11px; }
-
-        .empty-state {
-            color: var(--text-muted);
-            padding: 20px;
-            text-align: center;
-            font-size: 13px;
-        }
-
-        /* Card preview styles (realistic card) */
-        .card-preview {
-            margin-top: 20px;
-            padding: 16px;
-            background: var(--surface);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-        }
-        .card-preview .bank-card-shell {
-            transform: scale(0.9);
-            transform-origin: top left;
-            margin-bottom: 10px;
-        }
-        .card-preview h4 { margin-bottom: 12px; }
-        .card-hologram {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, gold, silver, gold, silver, gold);
-            opacity: 0.8;
-            border: 1px solid rgba(255,255,255,0.4);
-            margin-left: auto;
-        }
-        .bank-card-shell {
-            display: inline-block;
-            width: 100%;
-            max-width: 440px;
-        }
-        .card-flip { perspective: 1400px; min-height: 236px; }
-        .card-inner { position: relative; min-height: 236px; transition: transform .58s; transform-style: preserve-3d; }
-        .card-flip.flipped .card-inner { transform: rotateY(180deg); }
-        .bank-card {
-            position: absolute; inset: 0; border-radius: 30px; padding: 22px; overflow: hidden;
-            border: 1px solid rgba(255,255,255,.16); box-shadow: 0 26px 90px rgba(0,0,0,.38);
-            backface-visibility: hidden; -webkit-backface-visibility: hidden; isolation: isolate;
-        }
-        .bank-card.back { transform: rotateY(180deg); }
-        .bank-card.mastercard {
-            background: radial-gradient(circle at 86% 14%, rgba(255,255,255,.17), transparent 28%), linear-gradient(135deg,#231227,#45173f 44%,#140f22);
-        }
-        .bank-card.visa {
-            background: radial-gradient(circle at 86% 14%, rgba(255,255,255,.15), transparent 28%), linear-gradient(135deg,#071d50,#0f3b86 48%,#10192e);
-        }
-        .bank-card.online {
-            background: radial-gradient(circle at 86% 14%, rgba(255,255,255,.15), transparent 28%), linear-gradient(135deg,#0d271c,#1d6b4f 48%,#0e1b16);
-        }
-        .bank-card::before {
-            content: ''; position: absolute; width:240px; height:240px; right:-82px; top:-82px;
-            border-radius:50%; background: radial-gradient(circle, rgba(255,255,255,.18), transparent 65%); z-index:-1;
-        }
-        .bank-card::after {
-            content: ''; position: absolute; width:260px; height:260px; left:-112px; bottom:-145px;
-            border-radius:50%; background: radial-gradient(circle, rgba(255,255,255,.12), transparent 67%); z-index:-1;
-        }
-        .card-top, .card-bottom, .card-chip-row { display: flex; justify-content: space-between; gap:12px; }
-        .card-top { align-items: flex-start; }
-        .bank-logo { display: inline-flex; align-items: center; gap:10px; font-size:13px; font-weight:900; }
-        .bank-logo-mark {
-            width:42px; height:34px; border-radius:12px; display:grid; place-items:center;
-            background: linear-gradient(145deg, rgba(255,255,255,.24), rgba(255,255,255,.07));
-            border:1px solid rgba(255,255,255,.22); box-shadow:inset 0 1px 0 rgba(255,255,255,.20);
-        }
-        .network-logo { min-width:72px; text-align:right; font-family:var(--font-mono); font-weight:900; text-transform:uppercase; }
-        .master-logo { display:flex; justify-content:flex-end; align-items:center; }
-        .mc-circle { width:30px; height:30px; border-radius:999px; display:inline-block; background:rgba(255,90,60,.92); }
-        .mc-circle:last-child { margin-left:-9px; background:rgba(255,190,60,.92); mix-blend-mode:screen; }
-        .card-chip {
-            width:48px; height:36px; border-radius:10px;
-            background: linear-gradient(135deg, rgba(255,255,255,.86), rgba(255,255,255,.34));
-            border:1px solid rgba(255,255,255,.40);
-        }
-        .card-type-pill {
-            padding:7px 10px; border-radius:999px; background:rgba(255,255,255,.1);
-            border:1px solid rgba(255,255,255,.13); font-size:10px; font-weight:900; text-transform:uppercase;
-        }
-        .card-number { margin-top:17px; font-size:clamp(20px,4vw,29px); font-weight:900; letter-spacing:.055em; }
-        .card-label { margin-bottom:5px; color:rgba(255,255,255,.64); font-size:10px; font-weight:900; text-transform:uppercase; }
-        .card-value { font-size:13px; font-weight:900; }
-        .card-value.large { font-size:16px; }
-        .mag-strip { height:48px; margin:20px -22px 18px; background:rgba(0,0,0,.78); }
-        .signature-row { display:grid; grid-template-columns:1fr 74px; gap:10px; align-items:center; }
-        .signature-box {
-            height:42px; border-radius:8px; background:repeating-linear-gradient(-8deg,
-            rgba(255,255,255,.82), rgba(255,255,255,.82) 5px,
-            rgba(225,230,245,.82) 5px, rgba(225,230,245,.82) 10px);
-        }
-        .cvc-box { height:42px; border-radius:8px; display:grid; place-items:center; background:#fff; color:#101223; font-weight:900; }
-        .card-back-note { margin-top:10px; color:rgba(255,255,255,.7); font-size:9px; line-height:1.35; }
+        .empty-state { color: var(--text-muted); padding: 20px; text-align: center; font-size: 13px; letter-spacing: -0.01em; }
 
         @media (max-width: 768px) {
             .admin-container { padding: 8px 10px 30px; }
@@ -584,7 +378,6 @@
             .form-row { grid-template-columns: 1fr; gap: 10px; }
             .profile-grid, .card-edit-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .toast { font-size: 12px; padding: 10px 20px; top: 10px; }
-            .bank-card-shell { max-width: 100%; }
         }
         @media (max-width: 420px) {
             .profile-grid, .card-edit-grid { grid-template-columns: 1fr; }
@@ -644,14 +437,6 @@
                     </table>
                 </div>
             </div>
-            <div class="panel" style="margin-top:16px;">
-                <h3>Update Transaction Date</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Transaction ID</label><input type="text" class="input" id="txDateId" placeholder="Transaction ID"></div>
-                    <div class="form-group"><label>New Date</label><input type="datetime-local" class="input" id="txNewDate"></div>
-                </div>
-                <button class="btn btn-primary" onclick="updateTransactionDate()"><i class="fas fa-calendar-alt"></i> Update Date</button>
-            </div>
         </div>
 
         <!-- ─── Messages Tab ────────────── -->
@@ -709,7 +494,7 @@
     </div>
 
     <script>
-        const API_BASE = "https://finova-b-production.up.railway.app";
+        const API_BASE = "https://finova-b-production.up.railway.app"; // keep as needed
         let allUsers = [];
 
         function showToast(message) {
@@ -724,14 +509,7 @@
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
-            // Activate the clicked button
-            const buttons = document.querySelectorAll('.tab-btn');
-            for (const btn of buttons) {
-                if (btn.textContent.toLowerCase().includes(tab) || btn.onclick.toString().includes(`switchTab('${tab}')`)) {
-                    btn.classList.add('active');
-                    break;
-                }
-            }
+            event.target.classList.add('active');
             switch (tab) {
                 case 'users': loadUsers(); break;
                 case 'transactions': loadTransactions(); break;
@@ -749,24 +527,28 @@
                 const data = await res.json();
                 allUsers = data.users;
                 document.getElementById('usersTable').innerHTML = data.users.map(u => `
-              <tr><td>${u.name}</td><td>${u.email}</td><td>${u.accountNumber}</td>
-              <td>$${u.balance.toFixed(2)}</td>
-              <td><span class="badge ${u.pinSet ? 'badge-success' : 'badge-warning'}">${u.pinSet ? 'Set' : 'Not Set'}</span></td>
-              <td>
-                <button class="btn btn-sm btn-success" onclick="showAddFunds('${u.id}')">Add Funds</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')" style="margin-left:4px;"><i class="fas fa-trash"></i></button>
-              </td></tr>`).join('');
-                document.getElementById('fundUserId').innerHTML = data.users.map(u => `<option value="${u.id}">${u.name} (${u.email}) - $${u.balance.toFixed(2)}</option>`).join('');
-                document.getElementById('notifUserId').innerHTML = '<option value="all">All Users (Global)</option>' + data.users.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+                    <tr><td>${u.name}</td><td>${u.email}</td><td>${u.accountNumber}</td>
+                    <td>$${u.balance.toFixed(2)}</td>
+                    <td><span class="badge ${u.pinSet ? 'badge-success' : 'badge-warning'}">${u.pinSet ? 'Set' : 'Not Set'}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-success" onclick="showAddFunds('${u.id}')">Add Funds</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')" style="margin-left:4px;"><i class="fas fa-trash"></i></button>
+                    </td></tr>`).join('');
+                document.getElementById('fundUserId').innerHTML = data.users.map(u =>
+                    `<option value="${u.id}">${u.name} (${u.email}) - $${u.balance.toFixed(2)}</option>`).join('');
+                document.getElementById('notifUserId').innerHTML =
+                    '<option value="all">All Users (Global)</option>' + data.users.map(u =>
+                        `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
             } catch (e) { showToast('Failed to load users'); }
         }
 
         async function deleteUser(userId) {
-            if (!confirm('Delete this user and all their data? This cannot be undone.')) return;
+            if (!confirm('Are you sure you want to delete this user? This cannot be undone.')) return;
             try {
                 const res = await fetch(`${API_BASE}/api/admin/users/${userId}`, { method: 'DELETE' });
                 const data = await res.json();
-                if (data.success) { showToast('User deleted'); loadUsers(); } else showToast(data.message);
+                if (data.success) { showToast('User deleted'); loadUsers(); }
+                else showToast(data.message || 'Failed');
             } catch (e) { showToast('Failed to delete user'); }
         }
 
@@ -778,7 +560,8 @@
             if (!amount || amount <= 0) { showToast('Enter valid amount'); return; }
             try {
                 const res = await fetch(`${API_BASE}/api/admin/add-funds`, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ userId, amount: parseFloat(amount) })
                 });
                 const data = await res.json();
@@ -787,21 +570,8 @@
             } catch (e) { showToast('Failed to add funds'); }
         }
 
-        // Transactions
-        async function loadTransactions() {
-            try {
-                const res = await fetch(`${API_BASE}/api/admin/transactions`);
-                const data = await res.json();
-                document.getElementById('transactionsTable').innerHTML = data.transactions.map(t => {
-                    const badge = getStatusBadge(t.status);
-                    const actions = getActionButtons(t);
-                    return `<tr><td>${new Date(t.createdAt).toLocaleString()}</td><td>${t.userId?.slice(0,8)}...</td><td><span class="badge badge-info">${t.type}</span></td><td>$${parseFloat(t.amount).toFixed(2)}</td><td>${badge}</td><td>${actions}</td></tr>`;
-                }).join('');
-            } catch (e) { showToast('Failed to load transactions'); }
-        }
-
         function getStatusBadge(status) {
-            switch(status) {
+            switch (status) {
                 case 'completed': return '<span class="badge badge-success">completed</span>';
                 case 'pending': return '<span class="badge badge-warning">pending</span>';
                 case 'rejected': return '<span class="badge badge-danger">rejected</span>';
@@ -811,290 +581,241 @@
         }
 
         function getActionButtons(t) {
-            if (t.status === 'pending') return `<button class="btn btn-sm btn-success" onclick="approveTransaction('${t.id}')">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectTransaction('${t.id}')" style="margin-left:4px;">Reject</button>`;
-            if (t.status === 'completed') return `<button class="btn btn-sm btn-reverse" onclick="reverseTransaction('${t.id}')">Reverse</button>`;
+            if (t.status === 'pending')
+                return `<button class="btn btn-sm btn-success" onclick="approveTransaction('${t.id}')">Approve</button><button class="btn btn-sm btn-danger" onclick="rejectTransaction('${t.id}')" style="margin-left:4px;">Reject</button>`;
+            if (t.status === 'completed')
+                return `<button class="btn btn-sm btn-reverse" onclick="reverseTransaction('${t.id}')">Reverse</button>`;
             return '';
         }
 
-        async function approveTransaction(id) {
-            const res = await fetch(`${API_BASE}/api/admin/approve-transaction`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ transactionId: id })
-            });
-            const data = await res.json();
-            if (data.success) { showToast('Approved'); loadTransactions(); loadUsers(); } else showToast(data.message);
-        }
-        async function rejectTransaction(id) {
-            const res = await fetch(`${API_BASE}/api/admin/reject-transaction`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ transactionId: id })
-            });
-            const data = await res.json();
-            if (data.success) { showToast('Rejected'); loadTransactions(); }
-        }
-        async function reverseTransaction(id) {
-            const res = await fetch(`${API_BASE}/api/admin/reverse-transaction`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ transactionId: id })
-            });
-            const data = await res.json();
-            if (data.success) { showToast('Reversed'); loadTransactions(); loadUsers(); }
+        async function loadTransactions() {
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/transactions`);
+                const data = await res.json();
+                document.getElementById('transactionsTable').innerHTML = data.transactions.map(t => `
+                    <tr><td>${new Date(t.createdAt).toLocaleString()}</td><td>${t.userId?.slice(0,8)}...</td>
+                    <td><span class="badge badge-info">${t.type}</span></td><td>$${parseFloat(t.amount).toFixed(2)}</td>
+                    <td>${getStatusBadge(t.status)}</td><td>${getActionButtons(t)}</td></tr>`).join('');
+            } catch (e) { showToast('Failed to load transactions'); }
         }
 
-        // Update transaction date
-        async function updateTransactionDate() {
-            const transactionId = document.getElementById('txDateId').value.trim();
-            const newDate = document.getElementById('txNewDate').value;
-            if (!transactionId || !newDate) { showToast('Fill both fields'); return; }
+        async function approveTransaction(id) {
             try {
-                const res = await fetch(`${API_BASE}/api/admin/update-transaction-date`, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ transactionId, newDate })
+                const res = await fetch(`${API_BASE}/api/admin/approve-transaction`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ transactionId: id })
                 });
                 const data = await res.json();
-                if (data.success) { showToast('Date updated'); loadTransactions(); } else showToast(data.message);
+                if (data.success) { showToast('Transaction approved'); loadTransactions(); loadUsers(); }
+                else showToast(data.message || 'Failed');
             } catch (e) { showToast('Failed'); }
         }
 
-        // Messages
+        async function rejectTransaction(id) {
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/reject-transaction`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ transactionId: id })
+                });
+                const data = await res.json();
+                if (data.success) { showToast('Transaction rejected'); loadTransactions(); }
+            } catch (e) { showToast('Failed'); }
+        }
+
+        async function reverseTransaction(id) {
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/reverse-transaction`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ transactionId: id })
+                });
+                const data = await res.json();
+                if (data.success) { showToast('Transaction reversed'); loadTransactions(); loadUsers(); }
+            } catch (e) { showToast('Failed'); }
+        }
+
         async function loadMessages() {
-            const res = await fetch(`${API_BASE}/api/admin/messages`);
-            const data = await res.json();
-            document.getElementById('messagesList').innerHTML = data.messages.map(m => `
-            <div class="message-bubble">
-              <div><span class="user">${m.userName}</span> <span class="time">${new Date(m.createdAt).toLocaleString()}</span></div>
-              <p style="margin:8px 0;">${m.message}</p>
-              ${m.reply ? `<div class="reply-box"><strong>Reply:</strong> ${m.reply}</div>` : ''}
-              <div style="display:flex;gap:8px;margin-top:10px;">
-                <input type="text" class="input" id="reply-${m.id}" placeholder="Type reply..." style="flex:1;">
-                <button class="btn btn-sm btn-primary" onclick="replyMessage('${m.id}')">Reply</button>
-              </div>
-            </div>`).join('');
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/messages`);
+                const data = await res.json();
+                document.getElementById('messagesList').innerHTML = data.messages.map(m => `
+                    <div class="message-bubble">
+                        <div><span class="user">${m.userName}</span> <span class="time">${new Date(m.createdAt).toLocaleString()}</span></div>
+                        <p style="margin:8px 0;">${m.message}</p>
+                        ${m.reply ? `<div class="reply-box"><strong>Reply:</strong> ${m.reply}</div>` : ''}
+                        <div style="display:flex;gap:8px;margin-top:10px;">
+                            <input type="text" class="input" id="reply-${m.id}" placeholder="Type reply..." style="flex:1;">
+                            <button class="btn btn-sm btn-primary" onclick="replyMessage('${m.id}')">Reply</button>
+                        </div>
+                    </div>`).join('');
+            } catch (e) { showToast('Failed to load messages'); }
         }
 
         async function replyMessage(messageId) {
             const reply = document.getElementById(`reply-${messageId}`).value.trim();
             if (!reply) return;
-            const res = await fetch(`${API_BASE}/api/admin/reply-message`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ messageId, reply })
-            });
-            const data = await res.json();
-            if (data.success) { showToast('Reply sent'); loadMessages(); } else showToast(data.message);
-        }
-
-        // Notifications
-        async function loadNotifications() {
-            const res = await fetch(`${API_BASE}/api/admin/notifications`);
-            const data = await res.json();
-            const list = document.getElementById('notificationsList');
-            if (!data.notifications || data.notifications.length === 0) { list.innerHTML = '<div class="empty-state">No active notifications.</div>'; return; }
-            list.innerHTML = data.notifications.map(n => `
-            <div class="notif-item">
-                <div><strong>${n.type.toUpperCase()}</strong> ${n.global ? '(Global)' : 'User-specific'}<br><small>${n.message}</small><br><small style="color:#5c5f78;">${new Date(n.createdAt).toLocaleString()}</small></div>
-                <button class="btn btn-sm btn-danger" onclick="deleteNotification('${n.id}')"><i class="fas fa-trash"></i></button>
-            </div>`).join('');
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/reply-message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messageId, reply })
+                });
+                const data = await res.json();
+                if (data.success) { showToast('Reply sent'); loadMessages(); }
+                else showToast(data.message);
+            } catch (e) { showToast('Failed to reply'); }
         }
 
         async function setNotification() {
             const userId = document.getElementById('notifUserId').value;
             const type = document.getElementById('notifType').value;
             const message = document.getElementById('notifMessage').value;
-            if (!message) { showToast('Enter message'); return; }
-            const res = await fetch(`${API_BASE}/api/admin/set-notification`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ userId, type, message, global: userId === 'all' })
-            });
-            const data = await res.json();
-            if (data.success) { showToast('Notification set'); document.getElementById('notifMessage').value = ''; loadNotifications(); }
+            if (!message) { showToast('Enter notification message'); return; }
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/set-notification`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, type, message, global: userId === 'all' })
+                });
+                const data = await res.json();
+                if (data.success) { showToast('Notification set'); document.getElementById('notifMessage').value = ''; loadNotifications(); }
+            } catch (e) { showToast('Failed'); }
+        }
+
+        async function loadNotifications() {
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/notifications`);
+                const data = await res.json();
+                const list = document.getElementById('notificationsList');
+                if (!data.notifications || data.notifications.length === 0) {
+                    list.innerHTML = '<div class="empty-state">No active notifications.</div>';
+                    return;
+                }
+                list.innerHTML = data.notifications.map(n => `
+                    <div class="notif-item">
+                        <div><strong>${n.type.toUpperCase()}</strong> ${n.global ? '(Global)' : 'User-specific'}<br><small>${n.message}</small><br><small style="color:#5c5f78;">${new Date(n.createdAt).toLocaleString()}</small></div>
+                        <button class="btn btn-sm btn-danger" onclick="deleteNotification('${n.id}')"><i class="fas fa-trash"></i></button>
+                    </div>`).join('');
+            } catch (e) { showToast('Failed'); }
         }
 
         async function deleteNotification(id) {
-            if (!confirm('Delete?')) return;
-            const res = await fetch(`${API_BASE}/api/admin/notifications/${id}`, { method: 'DELETE' });
-            const data = await res.json();
-            if (data.success) { showToast('Deleted'); loadNotifications(); }
+            if (!confirm('Delete this notification?')) return;
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/notifications/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) { showToast('Deleted'); loadNotifications(); }
+            } catch (e) { showToast('Failed'); }
         }
 
-        // Cards
         async function loadCardUsers() {
-            const res = await fetch(`${API_BASE}/api/admin/users`);
-            const data = await res.json();
-            allUsers = data.users;
-            document.getElementById('cardUserId').innerHTML = '<option value="">-- Select a user --</option>' + data.users.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
-            document.getElementById('cardsEditContainer').innerHTML = '';
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/users`);
+                const data = await res.json();
+                allUsers = data.users;
+                document.getElementById('cardUserId').innerHTML =
+                    '<option value="">-- Select a user --</option>' + data.users.map(u =>
+                        `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+                document.getElementById('cardsEditContainer').innerHTML = '';
+            } catch (e) { showToast('Failed to load users'); }
         }
 
         async function loadUserCards() {
             const userId = document.getElementById('cardUserId').value;
             if (!userId) { document.getElementById('cardsEditContainer').innerHTML = ''; return; }
-            const res = await fetch(`${API_BASE}/api/admin/user-cards/${userId}`);
-            const data = await res.json();
-            if (data.success && data.cards.length) {
-                renderCardEditor(data.cards, userId);
-            } else {
-                document.getElementById('cardsEditContainer').innerHTML = '<div class="panel"><div class="empty-state">No cards found for this user.</div></div>';
-            }
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/user-cards/${userId}`);
+                const data = await res.json();
+                if (data.success && data.cards.length) {
+                    renderCardEditor(data.cards, userId);
+                } else {
+                    document.getElementById('cardsEditContainer').innerHTML =
+                        '<div class="panel"><div class="empty-state">No cards found for this user.</div></div>';
+                }
+            } catch (e) { showToast('Failed to load cards'); }
         }
 
         function renderCardEditor(cards, userId) {
             const container = document.getElementById('cardsEditContainer');
-            const labels = { mastercard: 'Mastercard', visa: 'Visa', online: 'Online' };
-            const badgeClasses = { mastercard: 'mastercard', visa: 'visa', online: 'online' };
-            container.innerHTML = cards.map(card => {
-                return `
+            const labels = { mastercard: 'Mastercard', visa: 'Visa', online: 'Online Card' };
+            const icons = { mastercard: 'fa-cc-mastercard', visa: 'fa-cc-visa', online: 'fa-credit-card' };
+            container.innerHTML = cards.map(card => `
                 <div class="panel card-edit-panel">
-                    <h4><span class="card-badge ${badgeClasses[card.type]}">${labels[card.type]}</span></h4>
-                    <div class="card-edit-grid">
-                        <div class="form-group"><label>Cardholder</label><input type="text" class="input" id="holder-${card.id}" value="${card.holder || ''}" oninput="updateCardPreview('${card.id}')"></div>
-                        <div class="form-group"><label>Number</label><input type="text" class="input" id="number-${card.id}" value="${card.number || ''}" maxlength="19" oninput="updateCardPreview('${card.id}')"></div>
-                        <div class="form-group"><label>Expiry</label><input type="text" class="input" id="expiry-${card.id}" value="${card.expiry || ''}" maxlength="5" oninput="updateCardPreview('${card.id}')"></div>
-                        <div class="form-group"><label>CVC</label><input type="text" class="input" id="cvc-${card.id}" value="${card.cvc || ''}" maxlength="3" oninput="updateCardPreview('${card.id}')"></div>
-                        <div class="form-group"><label>Balance</label><input type="number" class="input" id="balance-${card.id}" value="${card.balance || 0}" step="0.01" min="0"></div>
-                    </div>
-                    <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
-                        <button class="btn btn-primary" onclick="saveCard('${userId}', '${card.id}')"><i class="fas fa-save"></i> Save</button>
-                        <button class="btn btn-success" onclick="addCardFunds('${userId}', '${card.id}')"><i class="fas fa-plus"></i> Add Funds</button>
-                        <span style="display:flex; align-items:center; gap:6px; margin-left:auto;">
-                            <button class="btn btn-sm btn-soft" onclick="flipCardPreview('${card.id}')"><i class="fas fa-rotate"></i> Flip</button>
+                    <h4>
+                        <span class="card-badge ${card.type}">
+                            <i class="fab ${icons[card.type] || 'fa-credit-card'}"></i> ${labels[card.type] || card.label}
                         </span>
-                    </div>
-                    <div class="card-preview" id="preview-${card.id}">
-                        <h4>Live Preview</h4>
-                        <div class="bank-card-shell">
-                            <div class="card-flip" id="flip-preview-${card.id}">
-                                <div class="card-inner">
-                                    <!-- Front -->
-                                    <div class="bank-card ${card.type}">
-                                        <div class="card-top">
-                                            <div class="bank-logo">
-                                                <span class="bank-logo-mark"><i class="fa-solid fa-building-columns"></i></span>
-                                                <span class="bank-logo-text"><span>Capitalora Bank</span><span>Platinum</span></span>
-                                            </div>
-                                            <div class="network-logo ${card.type === 'visa' ? 'visa-logo' : card.type === 'mastercard' ? 'master-logo' : 'online-logo'}">
-                                                ${card.type === 'visa' ? 'VISA' : card.type === 'mastercard' ? '<span class="mc-circle"></span><span class="mc-circle"></span>' : 'ONLINE'}
-                                            </div>
-                                        </div>
-                                        <div class="card-chip-row">
-                                            <span class="card-chip"></span>
-                                            <span class="card-type-pill">${card.cardKind || 'Debit'}</span>
-                                            <span class="card-hologram"></span>
-                                        </div>
-                                        <div class="card-number" id="preview-number-${card.id}">${formatCardNumber(card.number)}</div>
-                                        <div class="card-bottom">
-                                            <div><div class="card-label">Cardholder</div><div class="card-value large" id="preview-holder-${card.id}">${card.holder || 'CARDHOLDER'}</div></div>
-                                            <div><div class="card-label">Expiry</div><div class="card-value" id="preview-expiry-${card.id}">${card.expiry || 'MM/YY'}</div></div>
-                                            <div><div class="card-label">Balance</div><div class="card-value" id="preview-balance-${card.id}">$${(card.balance||0).toFixed(2)}</div></div>
-                                        </div>
-                                    </div>
-                                    <!-- Back -->
-                                    <div class="bank-card back ${card.type}">
-                                        <div class="card-top">
-                                            <div class="bank-logo">
-                                                <span class="bank-logo-mark"><i class="fa-solid fa-building-columns"></i></span>
-                                                <span class="bank-logo-text"><span>Capitalora Bank</span><span>Secure card</span></span>
-                                            </div>
-                                            <div class="network-logo ${card.type === 'visa' ? 'visa-logo' : card.type === 'mastercard' ? 'master-logo' : 'online-logo'}">
-                                                ${card.type === 'visa' ? 'VISA' : card.type === 'mastercard' ? '<span class="mc-circle"></span><span class="mc-circle"></span>' : 'ONLINE'}
-                                            </div>
-                                        </div>
-                                        <div class="mag-strip"></div>
-                                        <div class="signature-row">
-                                            <div><div class="card-label">Authorized signature</div><div class="signature-box"></div></div>
-                                            <div><div class="card-label">CVC</div><div class="cvc-box" id="preview-cvc-${card.id}">${card.cvc || '000'}</div></div>
-                                        </div>
-                                        <div class="card-back-note">
-                                            This card is issued by Capitalora Bank pursuant to a license from ${card.type === 'mastercard' ? 'Mastercard International' : card.type === 'visa' ? 'Visa U.S.A. Inc.' : 'Virtual Card Services'}.<br><br>
-                                            Customer Service: 1-800-CAPITALORA
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </h4>
+                    <div class="card-edit-grid">
+                        <div class="form-group">
+                            <label>Card Type</label>
+                            <select class="input" id="type-${card.id}">
+                                <option value="mastercard" ${card.type==='mastercard'?'selected':''}>Mastercard</option>
+                                <option value="visa" ${card.type==='visa'?'selected':''}>Visa</option>
+                                <option value="online" ${card.type==='online'?'selected':''}>Online Card</option>
+                            </select>
                         </div>
+                        <div class="form-group"><label>Cardholder Name</label><input type="text" class="input" id="holder-${card.id}" value="${card.holder || ''}" placeholder="Full name"></div>
+                        <div class="form-group"><label>Card Number</label><input type="text" class="input" id="number-${card.id}" value="${card.number || ''}" placeholder="0000 0000 0000 0000" maxlength="19"></div>
+                        <div class="form-group"><label>Expiry Date</label><input type="text" class="input" id="expiry-${card.id}" value="${card.expiry || ''}" placeholder="MM/YY" maxlength="5"></div>
+                        <div class="form-group"><label>CVC <small style="color:var(--text-muted);">3‑digit security code</small></label><input type="text" class="input" id="cvc-${card.id}" value="${card.cvc || ''}" placeholder="123" maxlength="3"></div>
+                        <div class="form-group"><label>Balance ($)</label><input type="number" class="input" id="balance-${card.id}" value="${card.balance || 0}" placeholder="0.00" step="0.01" min="0"></div>
                     </div>
-                </div>`;
-            }).join('');
-
-            // Initialize previews
-            cards.forEach(card => updateCardPreview(card.id));
-        }
-
-        function updateCardPreview(cardId) {
-            const holder = document.getElementById(`holder-${cardId}`)?.value || '';
-            const number = document.getElementById(`number-${cardId}`)?.value || '';
-            const expiry = document.getElementById(`expiry-${cardId}`)?.value || '';
-            const cvc = document.getElementById(`cvc-${cardId}`)?.value || '';
-            const balance = parseFloat(document.getElementById(`balance-${cardId}`)?.value) || 0;
-
-            const previewHolder = document.getElementById(`preview-holder-${cardId}`);
-            if (previewHolder) previewHolder.textContent = holder || 'CARDHOLDER';
-            const previewNumber = document.getElementById(`preview-number-${cardId}`);
-            if (previewNumber) previewNumber.textContent = formatCardNumber(number);
-            const previewExpiry = document.getElementById(`preview-expiry-${cardId}`);
-            if (previewExpiry) previewExpiry.textContent = expiry || 'MM/YY';
-            const previewCvc = document.getElementById(`preview-cvc-${cardId}`);
-            if (previewCvc) previewCvc.textContent = cvc || '000';
-            const previewBalance = document.getElementById(`preview-balance-${cardId}`);
-            if (previewBalance) previewBalance.textContent = `$${balance.toFixed(2)}`;
-        }
-
-        function flipCardPreview(cardId) {
-            document.getElementById(`flip-preview-${cardId}`)?.classList.toggle('flipped');
+                    <button class="btn btn-primary" onclick="saveCard('${userId}', '${card.id}')" style="margin-top:12px;"><i class="fas fa-save"></i> Save Card</button>
+                </div>
+            `).join('');
         }
 
         async function saveCard(userId, cardId) {
             const updates = {
+                type: document.getElementById(`type-${cardId}`).value,
                 holder: document.getElementById(`holder-${cardId}`).value.trim(),
                 number: document.getElementById(`number-${cardId}`).value.trim(),
                 expiry: document.getElementById(`expiry-${cardId}`).value.trim(),
                 cvc: document.getElementById(`cvc-${cardId}`).value.trim(),
                 balance: parseFloat(document.getElementById(`balance-${cardId}`).value) || 0
             };
-            const res = await fetch(`${API_BASE}/api/admin/update-card`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ userId, cardId, updates })
-            });
-            const data = await res.json();
-            if (data.success) { showToast('Card updated'); } else showToast(data.message);
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/update-card`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, cardId, updates })
+                });
+                const data = await res.json();
+                if (data.success) { showToast('Card updated successfully'); loadUserCards(); }
+                else showToast(data.message || 'Failed to update card');
+            } catch (e) { showToast('Failed to update card'); }
         }
 
-        async function addCardFunds(userId, cardId) {
-            const amount = parseFloat(prompt('Enter amount to add to this card:'));
-            if (!amount || amount <= 0) return;
-            const res = await fetch(`${API_BASE}/api/admin/add-card-funds`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ userId, cardId, amount })
-            });
-            const data = await res.json();
-            if (data.success) {
-                showToast(`Added $${amount} to card. New balance: $${data.cardBalance.toFixed(2)}`);
-                const balanceInput = document.getElementById(`balance-${cardId}`);
-                if (balanceInput) {
-                    balanceInput.value = data.cardBalance;
-                    updateCardPreview(cardId);
-                }
-            } else showToast(data.message);
-        }
-
-        // Profiles
         async function loadProfiles() {
-            const res = await fetch(`${API_BASE}/api/admin/users`);
-            const data = await res.json();
-            const container = document.getElementById('profilesContainer');
-            if (!data.users.length) { container.innerHTML = '<div class="empty-state">No users.</div>'; return; }
-            container.innerHTML = data.users.map(u => {
-                const p = u.profile || {};
-                return `<div class="profile-card">
-              <h4>${u.name} (${u.email})</h4>
-              <div class="profile-grid">
-                <div class="profile-item"><label>DOB</label><input type="text" class="input" id="dob-${u.id}" value="${p.dob || ''}"></div>
-                <div class="profile-item"><label>Gender</label><input type="text" class="input" id="gender-${u.id}" value="${p.gender || ''}"></div>
-                <div class="profile-item"><label>City</label><input type="text" class="input" id="city-${u.id}" value="${p.city || ''}"></div>
-                <div class="profile-item"><label>State</label><input type="text" class="input" id="state-${u.id}" value="${p.state || ''}"></div>
-                <div class="profile-item"><label>SSN</label><input type="text" class="input" id="ssn-${u.id}" value="${p.ssn || ''}"></div>
-                <div class="profile-item"><label>Account Type</label><input type="text" class="input" id="accountType-${u.id}" value="${p.accountType || ''}"></div>
-                <div class="profile-item"><label>Employment</label><input type="text" class="input" id="employment-${u.id}" value="${p.employment || ''}"></div>
-                <div class="profile-item"><label>Income</label><input type="text" class="input" id="income-${u.id}" value="${p.income || ''}"></div>
-              </div>
-              <button class="btn btn-primary" onclick="saveProfile('${u.id}')" style="margin-top:12px;"><i class="fas fa-save"></i> Save</button>
-            </div>`;
-            }).join('');
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/users`);
+                const data = await res.json();
+                const container = document.getElementById('profilesContainer');
+                if (!data.users.length) {
+                    container.innerHTML = '<div class="empty-state">No users found.</div>';
+                    return;
+                }
+                container.innerHTML = data.users.map(u => {
+                    const p = u.profile || {};
+                    return `<div class="profile-card">
+                        <h4>${u.name} (${u.email})</h4>
+                        <div class="profile-grid">
+                            <div class="profile-item"><label>Date of Birth</label><input type="text" class="input" id="dob-${u.id}" value="${p.dob || ''}" placeholder="YYYY-MM-DD"></div>
+                            <div class="profile-item"><label>Gender</label><input type="text" class="input" id="gender-${u.id}" value="${p.gender || ''}" placeholder="Gender"></div>
+                            <div class="profile-item"><label>City</label><input type="text" class="input" id="city-${u.id}" value="${p.city || ''}" placeholder="City"></div>
+                            <div class="profile-item"><label>State</label><input type="text" class="input" id="state-${u.id}" value="${p.state || ''}" placeholder="State"></div>
+                            <div class="profile-item"><label>SSN</label><input type="text" class="input" id="ssn-${u.id}" value="${p.ssn || ''}" placeholder="SSN"></div>
+                            <div class="profile-item"><label>Account Type</label><input type="text" class="input" id="accountType-${u.id}" value="${p.accountType || ''}" placeholder="e.g., Checking"></div>
+                            <div class="profile-item"><label>Employment</label><input type="text" class="input" id="employment-${u.id}" value="${p.employment || ''}" placeholder="Employed / Unemployed"></div>
+                            <div class="profile-item"><label>Annual Income</label><input type="text" class="input" id="income-${u.id}" value="${p.income || ''}" placeholder="$50,000"></div>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveProfile('${u.id}')" style="margin-top:12px;"><i class="fas fa-save"></i> Save Profile</button>
+                    </div>`;
+                }).join('');
+            } catch (e) { showToast('Failed'); }
         }
 
         async function saveProfile(userId) {
@@ -1108,20 +829,26 @@
                 employment: document.getElementById(`employment-${userId}`).value.trim(),
                 income: document.getElementById(`income-${userId}`).value.trim()
             };
-            const res = await fetch(`${API_BASE}/api/admin/update-profile`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ userId, profile })
-            });
-            const data = await res.json();
-            if (data.success) showToast('Profile updated'); else showToast(data.message);
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/update-profile`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, profile })
+                });
+                const data = await res.json();
+                if (data.success) { showToast('Profile updated successfully'); }
+                else showToast(data.message || 'Failed');
+            } catch (e) { showToast('Failed to update profile'); }
         }
 
-        // Settings
         async function loadSettings() {
-            const res = await fetch(`${API_BASE}/api/admin/settings`);
-            const data = await res.json();
-            document.getElementById('bankName').value = data.settings.bankName || 'CAPITALORA';
-            document.getElementById('telegramToken').value = data.settings.telegramBotToken || '';
-            document.getElementById('telegramChatId').value = data.settings.telegramChatId || '';
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/settings`);
+                const data = await res.json();
+                document.getElementById('bankName').value = data.settings.bankName || 'CAPITALORA';
+                document.getElementById('telegramToken').value = data.settings.telegramBotToken || '';
+                document.getElementById('telegramChatId').value = data.settings.telegramChatId || '';
+            } catch (e) { showToast('Failed'); }
         }
 
         async function updateSettings() {
@@ -1130,16 +857,17 @@
                 telegramBotToken: document.getElementById('telegramToken').value,
                 telegramChatId: document.getElementById('telegramChatId').value
             };
-            const res = await fetch(`${API_BASE}/api/admin/update-settings`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(settings)
-            });
-            const data = await res.json();
-            if (data.success) showToast('Settings updated');
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/update-settings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                });
+                const data = await res.json();
+                if (data.success) showToast('Settings updated');
+            } catch (e) { showToast('Failed'); }
         }
 
-        function formatCardNumber(input) { return String(input || '').replace(/\D/g, '').slice(0, 19).replace(/(.{4})/g, '$1 ').trim(); }
-
-        // Initial load
         loadUsers();
     </script>
 </body>
