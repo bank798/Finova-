@@ -2302,44 +2302,75 @@
         let investTabActive = false;
         let lastBtcDirection = null;
 
-        // ---------- CURRENCIES (unchanged) ----------
+        // ---------- CURRENCIES ----------
         const currencies = [
             { code: "USD", symbol: "$", name: "US Dollar", rate: 1 },
             { code: "EUR", symbol: "€", name: "Euro", rate: 0.92 },
-            // ... all other currencies as in original ...
+            { code: "GBP", symbol: "£", name: "British Pound", rate: 0.79 },
+            { code: "NGN", symbol: "₦", name: "Nigerian Naira", rate: 1550 },
+            { code: "JPY", symbol: "¥", name: "Japanese Yen", rate: 149 },
+            { code: "CAD", symbol: "C$", name: "Canadian Dollar", rate: 1.36 },
+            { code: "AUD", symbol: "A$", name: "Australian Dollar", rate: 1.53 },
+            { code: "CHF", symbol: "Fr", name: "Swiss Franc", rate: 0.88 },
+            { code: "CNY", symbol: "¥", name: "Chinese Yuan", rate: 7.24 },
+            { code: "INR", symbol: "₹", name: "Indian Rupee", rate: 83.5 },
+            { code: "THB", symbol: "฿", name: "Thai Baht", rate: 36.2 },
+            { code: "ZAR", symbol: "R", name: "South African Rand", rate: 18.6 },
+            { code: "BRL", symbol: "R$", name: "Brazilian Real", rate: 5.47 },
+            { code: "MXN", symbol: "Mex$", name: "Mexican Peso", rate: 18.1 },
+            { code: "KRW", symbol: "₩", name: "South Korean Won", rate: 1350 },
+            { code: "SGD", symbol: "S$", name: "Singapore Dollar", rate: 1.34 },
+            { code: "HKD", symbol: "HK$", name: "Hong Kong Dollar", rate: 7.82 },
+            { code: "SEK", symbol: "kr", name: "Swedish Krona", rate: 10.8 },
+            { code: "NOK", symbol: "kr", name: "Norwegian Krone", rate: 10.5 },
+            { code: "DKK", symbol: "kr", name: "Danish Krone", rate: 6.88 },
+            { code: "PLN", symbol: "zł", name: "Polish Zloty", rate: 4.05 },
+            { code: "TRY", symbol: "₺", name: "Turkish Lira", rate: 32.3 },
+            { code: "RUB", symbol: "₽", name: "Russian Ruble", rate: 92.5 },
+            { code: "SAR", symbol: "﷼", name: "Saudi Riyal", rate: 3.75 },
+            { code: "AED", symbol: "د.إ", name: "UAE Dirham", rate: 3.67 },
+            { code: "ARS", symbol: "AR$", name: "Argentine Peso", rate: 870 },
+            { code: "CLP", symbol: "CLP$", name: "Chilean Peso", rate: 940 },
+            { code: "COP", symbol: "COL$", name: "Colombian Peso", rate: 4150 },
+            { code: "EGP", symbol: "E£", name: "Egyptian Pound", rate: 48.5 },
+            { code: "IDR", symbol: "Rp", name: "Indonesian Rupiah", rate: 15900 },
+            { code: "ILS", symbol: "₪", name: "Israeli Shekel", rate: 3.72 },
+            { code: "KES", symbol: "KSh", name: "Kenyan Shilling", rate: 130 },
+            { code: "MYR", symbol: "RM", name: "Malaysian Ringgit", rate: 4.65 },
+            { code: "PEN", symbol: "S/", name: "Peruvian Sol", rate: 3.78 },
+            { code: "PHP", symbol: "₱", name: "Philippine Peso", rate: 57.2 },
+            { code: "PKR", symbol: "₨", name: "Pakistani Rupee", rate: 278 },
+            { code: "QAR", symbol: "QR", name: "Qatari Riyal", rate: 3.64 },
+            { code: "RON", symbol: "lei", name: "Romanian Leu", rate: 4.57 },
+            { code: "TWD", symbol: "NT$", name: "New Taiwan Dollar", rate: 32.1 },
+            { code: "UAH", symbol: "₴", name: "Ukrainian Hryvnia", rate: 39.5 },
+            { code: "VND", symbol: "₫", name: "Vietnamese Dong", rate: 24800 },
+            { code: "BDT", symbol: "৳", name: "Bangladeshi Taka", rate: 117 },
+            { code: "CZK", symbol: "Kč", name: "Czech Koruna", rate: 23.2 },
+            { code: "HUF", symbol: "Ft", name: "Hungarian Forint", rate: 365 },
+            { code: "LKR", symbol: "Rs", name: "Sri Lankan Rupee", rate: 305 },
+            { code: "MAD", symbol: "DH", name: "Moroccan Dirham", rate: 9.85 },
+            { code: "GHS", symbol: "GH₵", name: "Ghanaian Cedi", rate: 14.8 },
+            { code: "TZS", symbol: "TSh", name: "Tanzanian Shilling", rate: 2550 },
+            { code: "UGX", symbol: "USh", name: "Ugandan Shilling", rate: 3800 },
             { code: "XOF", symbol: "CFA", name: "West African CFA Franc", rate: 605 }
         ];
 
         // ---------- HELPER FUNCTIONS ----------
         function currentUser() {
-            try {
-                return JSON.parse(localStorage.getItem(STORAGE.user)) || {};
-            } catch (_) { return {}; }
+            try { return JSON.parse(localStorage.getItem(STORAGE.user)) || {}; } catch (_) { return {}; }
         }
 
-        function getCurrency() {
-            return currencies.find(c => c.code === currentCurrency) || currencies[0];
-        }
-
-        function convert(amount) {
-            return amount * getCurrency().rate;
-        }
-
-        function toBase(displayAmount) {
-            return displayAmount / getCurrency().rate;
-        }
-
+        function getCurrency() { return currencies.find(c => c.code === currentCurrency) || currencies[0]; }
+        function convert(amount) { return amount * getCurrency().rate; }
+        function toBase(displayAmount) { return displayAmount / getCurrency().rate; }
         function money(amount) {
             const currency = getCurrency();
             const value = convert(Number(amount) || 0);
             const digits = ["JPY", "KRW", "IDR", "VND", "TZS", "UGX", "XOF"].includes(currency.code) ? 0 : 2;
             return currency.symbol + value.toLocaleString(undefined, { minimumFractionDigits: digits, maximumFractionDigits: digits });
         }
-
-        function privacyMoney(amount) {
-            return balanceHidden ? "••••••" : money(amount);
-        }
-
+        function privacyMoney(amount) { return balanceHidden ? "••••••" : money(amount); }
         function setMoneyText(id, amount) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -2350,15 +2381,12 @@
         function formatDate(date = new Date()) {
             return new Date(date).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
         }
-
         function formatDateTime(date = new Date()) {
             return new Date(date).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
         }
-
         function sanitize(text) {
             return String(text ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
         }
-
         function toast(message, type = "") {
             const el = document.getElementById("toast");
             el.textContent = message;
@@ -2366,7 +2394,6 @@
             clearTimeout(el._timer);
             el._timer = setTimeout(() => el.classList.remove("show"), 2600);
         }
-
         function showToast(message, type = "") { toast(message, type); }
 
         function formatLargeNumber(num) {
@@ -2377,7 +2404,6 @@
             if (num >= 1e3) return "$" + (num / 1e3).toFixed(2) + "K";
             return "$" + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
-
         function formatBtcPrice(price) {
             if (price === null || price === undefined || isNaN(price)) return "$0.00";
             return "$" + price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -2389,25 +2415,18 @@
             const changePercent = (Math.random() - 0.5) * 2 * volatility;
             const changeAmount = btcRealPrice * changePercent;
             const newPrice = btcRealPrice + changeAmount;
-
             if (newPrice > btcRealPrice) lastBtcDirection = "up";
             else if (newPrice < btcRealPrice) lastBtcDirection = "down";
-
             btcRealPrice = newPrice;
             btcDisplayPrice = btcRealPrice;
-
             if (btcRealPrice > btcHigh24h) btcHigh24h = btcRealPrice;
             if (btcRealPrice < btcLow24h) btcLow24h = btcRealPrice;
-
             btcChange24h = ((btcRealPrice - BTC_INITIAL_PRICE) / BTC_INITIAL_PRICE) * 100;
-
             btcMarketCap = btcRealPrice * 19500000;
             btcVolume = btcRealPrice * 350000 * (0.8 + Math.random() * 0.4);
-
             sparklineData.push(btcRealPrice);
             if (sparklineData.length > 60) sparklineData = sparklineData.slice(-60);
             localStorage.setItem(STORAGE.btcSparkline, JSON.stringify(sparklineData));
-
             updateBtcUI();
             if (investTabActive) drawSparkline();
         }
@@ -2416,14 +2435,9 @@
             if (btcSimInterval) clearInterval(btcSimInterval);
             btcSimInterval = setInterval(simulateBtcStep, 1000);
         }
-
         function stopBtcSimulation() {
-            if (btcSimInterval) {
-                clearInterval(btcSimInterval);
-                btcSimInterval = null;
-            }
+            if (btcSimInterval) { clearInterval(btcSimInterval); btcSimInterval = null; }
         }
-
         function refreshBtcNow() {
             simulateBtcStep();
             toast("BTC price updated!", "success");
@@ -2436,7 +2450,6 @@
             updateBtcChangeDisplay();
             updateBtcStatsDisplay();
         }
-
         function updateBtcPriceDisplay() {
             const el = document.getElementById("btcPrice");
             if (!el) return;
@@ -2450,7 +2463,6 @@
                 setTimeout(() => el.classList.remove("flash-down"), 600);
             }
         }
-
         function updateBtcChangeDisplay() {
             const el = document.getElementById("btcChange");
             if (!el) return;
@@ -2459,7 +2471,6 @@
             el.textContent = (isUp ? "+" : "") + change.toFixed(2) + "%";
             el.className = "btc-change " + (isUp ? "up" : "down");
         }
-
         function updateBtcStatsDisplay() {
             const setEl = (id, value, formatter) => {
                 const el = document.getElementById(id);
@@ -2477,7 +2488,6 @@
             if (!canvas || sparklineData.length < 2) return;
             const container = canvas.parentElement;
             if (!container || container.offsetWidth <= 0) return;
-
             const dpr = window.devicePixelRatio || 1;
             const displayWidth = container.offsetWidth;
             const displayHeight = 130;
@@ -2485,23 +2495,19 @@
             canvas.height = displayHeight * dpr;
             canvas.style.width = displayWidth + "px";
             canvas.style.height = displayHeight + "px";
-
             const ctx = canvas.getContext("2d");
             ctx.scale(dpr, dpr);
             ctx.clearRect(0, 0, displayWidth, displayHeight);
-
             const data = sparklineData;
             const min = Math.min(...data);
             const max = Math.max(...data);
             const range = max - min || 1;
             const paddingY = 18;
-
             const xStep = displayWidth / (data.length - 1);
             const points = data.map((val, i) => ({
                 x: i * xStep,
                 y: displayHeight - paddingY - ((val - min) / range) * (displayHeight - paddingY * 2)
             }));
-
             const isUp = data[data.length - 1] >= data[0];
             const lineColor = isUp ? "#10b981" : "#ef4444";
             const gradientFill = ctx.createLinearGradient(0, 0, 0, displayHeight);
@@ -2512,7 +2518,6 @@
                 gradientFill.addColorStop(0, "rgba(239,68,68,0.28)");
                 gradientFill.addColorStop(1, "rgba(239,68,68,0.01)");
             }
-
             ctx.beginPath();
             ctx.moveTo(points[0].x, displayHeight);
             for (const p of points) ctx.lineTo(p.x, p.y);
@@ -2520,7 +2525,6 @@
             ctx.closePath();
             ctx.fillStyle = gradientFill;
             ctx.fill();
-
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
             for (let i = 1; i < points.length; i++) {
@@ -2537,7 +2541,6 @@
             ctx.shadowBlur = 8;
             ctx.stroke();
             ctx.shadowBlur = 0;
-
             const lastPoint = points[points.length - 1];
             ctx.beginPath();
             ctx.arc(lastPoint.x, lastPoint.y, 5, 0, Math.PI * 2);
@@ -2554,10 +2557,7 @@
             updateBtcUI();
             setTimeout(() => drawSparkline(), 50);
         }
-
-        function onInvestTabDeactivated() {
-            investTabActive = false;
-        }
+        function onInvestTabDeactivated() { investTabActive = false; }
 
         // ---------- BACKEND INTEGRATION ----------
         async function loadUserFromBackend() {
@@ -2580,7 +2580,6 @@
                         date: formatDateTime(new Date(t.createdAt)),
                         createdAt: t.createdAt
                     }));
-
                     const updatedUser = {
                         ...user,
                         balance: balance,
@@ -2590,16 +2589,13 @@
                     };
                     localStorage.setItem(STORAGE.user, JSON.stringify(updatedUser));
                 }
-            } catch (e) {
-                console.warn('Could not load from backend, using cached data');
-            }
+            } catch (e) { console.warn('Could not load from backend'); }
         }
 
         async function verifyPinWithBackend(pin) {
             const user = currentUser();
             const res = await fetch(`${API_BASE}/api/verify-pin`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: user.id, pin })
             });
             return (await res.json()).success;
@@ -2608,8 +2604,7 @@
         async function submitTransferRequest(type, amount, recipient, bank, account, note) {
             const user = currentUser();
             const res = await fetch(`${API_BASE}/api/transfer-request`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: user.id, type, amount, recipient, bank, account, note })
             });
             return res.json();
@@ -2641,10 +2636,7 @@
                             }
                             updateUI();
                         }
-                        if (status !== 'pending') {
-                            await loadUserFromBackend();
-                            updateUI();
-                        }
+                        if (status !== 'pending') { await loadUserFromBackend(); updateUI(); }
                     }
                 } catch (e) {}
             }, 10000);
@@ -2665,11 +2657,7 @@
             document.getElementById("balanceDisplay").textContent = privacyMoney(balance);
             document.getElementById("accountNumberPill").textContent = `Acct: ${accountNumber}`;
         }
-
-        function toggleBalanceView() {
-            balanceHidden = !balanceHidden;
-            updateUI();
-        }
+        function toggleBalanceView() { balanceHidden = !balanceHidden; updateUI(); }
 
         function updateMetrics() {
             const income = transactions.filter(t => t.direction === "in").reduce((sum, t) => sum + Number(t.amount || 0), 0);
@@ -2705,12 +2693,9 @@
                 </div>`;
             }).join("");
         }
+        function clearTransactions() { loadUserFromBackend(); toast("Transaction list refreshed from server."); }
 
-        function clearTransactions() {
-            loadUserFromBackend();
-            toast("Transaction list refreshed from server.");
-        }
-
+        // ---------- CARDS RENDERING (with realistic bank details) ----------
         function renderCards() {
             document.getElementById("cardholderPreview").textContent = firstAndLastName();
             const list = document.getElementById("cardsList");
@@ -2722,22 +2707,42 @@
                         <div class="card-inner">
                             <div class="bank-card ${card.type}">
                                 <div class="card-top">
-                                    <div class="bank-logo"><span class="bank-logo-mark"><i class="fa-solid fa-building-columns"></i></span><span class="bank-logo-text"><span>Annonlime Bank</span><span>Capitalora</span></span></div>
+                                    <div class="bank-logo">
+                                        <span class="bank-logo-mark"><i class="fa-solid fa-building-columns"></i></span>
+                                        <span class="bank-logo-text"><span>Capitalora Bank</span><span>Platinum</span></span>
+                                    </div>
                                     ${networkLogo(card)}
                                 </div>
-                                <div class="card-chip-row"><span class="card-chip"></span><span class="card-type-pill">${sanitize(card.cardKind)}</span></div>
+                                <div class="card-chip-row">
+                                    <span class="card-chip"></span>
+                                    <span class="card-type-pill">${sanitize(card.cardKind)}</span>
+                                    <span class="card-hologram"></span>
+                                </div>
                                 <div class="card-number">${formatCardNumber(card.number)}</div>
                                 <div class="card-bottom">
-                                    <div><div class="card-label">Name</div><div class="card-value large">${sanitize(card.holder || firstAndLastName().toUpperCase())}</div></div>
+                                    <div><div class="card-label">Cardholder</div><div class="card-value large">${sanitize(card.holder || firstAndLastName().toUpperCase())}</div></div>
                                     <div><div class="card-label">Expiry</div><div class="card-value">${sanitize(card.expiry)}</div></div>
                                     <div><div class="card-label">Balance</div><div class="card-value ${balanceHidden ? "is-hidden-money" : ""}">${balanceText}</div></div>
                                 </div>
                             </div>
                             <div class="bank-card back ${card.type}">
-                                <div class="card-top"><div class="bank-logo"><span class="bank-logo-mark"><i class="fa-solid fa-building-columns"></i></span><span class="bank-logo-text"><span>Annonlime Bank</span><span>Secure card</span></span></div>${networkLogo(card)}</div>
+                                <div class="card-top">
+                                    <div class="bank-logo">
+                                        <span class="bank-logo-mark"><i class="fa-solid fa-building-columns"></i></span>
+                                        <span class="bank-logo-text"><span>Capitalora Bank</span><span>Secure card</span></span>
+                                    </div>
+                                    ${networkLogo(card)}
+                                </div>
                                 <div class="mag-strip"></div>
-                                <div class="signature-row"><div><div class="card-label">Authorized signature</div><div class="signature-box"></div></div><div><div class="card-label">CVC</div><div class="cvc-box">${sanitize(card.cvc)}</div></div></div>
-                                <div class="card-back-note">This card is issued by Annonlime Bank for CAPITALORA account use. Keep your card number, expiry date, and CVC private. Double tap again to return to the front.</div>
+                                <div class="signature-row">
+                                    <div><div class="card-label">Authorized signature</div><div class="signature-box"></div></div>
+                                    <div><div class="card-label">CVC</div><div class="cvc-box">${sanitize(card.cvc)}</div></div>
+                                </div>
+                                <div class="card-back-note">
+                                    This card is issued by Capitalora Bank pursuant to a license from ${card.type === 'mastercard' ? 'Mastercard International' : card.type === 'visa' ? 'Visa U.S.A. Inc.' : 'Virtual Card Services'}.<br><br>
+                                    Customer Service: 1-800-CAPITALORA (1-800-227-4825)<br>
+                                    Lost or stolen? Call immediately.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2786,8 +2791,7 @@
                 <button class="choice-card ${selected === source.id ? "active" : ""}" onclick="${setter}('${source.id}')" type="button">
                     <div class="choice-title">${sanitize(source.name)}</div>
                     <div class="choice-sub">${privacyMoney(source.balance)} available</div>
-                </button>
-                `).join("");
+                </button>`).join("");
             };
             render("transferFromChoices", selectedTransferFrom, "selectTransferFrom");
             render("transferToChoices", selectedTransferTo, "selectTransferTo");
@@ -2839,13 +2843,10 @@
                     updateUI();
                     startPollingTransaction(result.transactionId);
                     setTimeout(() => switchTab('dashboard'), 1000);
-                } else {
-                    showToast(result.message || 'Transfer failed', 'error');
-                }
+                } else showToast(result.message || 'Transfer failed', 'error');
             });
         }
 
-        // Send and Receive
         async function startSendWithPin() {
             const name = value("sendName");
             const acct = value("sendAccount");
@@ -2853,10 +2854,7 @@
             const displayAmount = parseFloat(value("sendAmount"));
             const amount = toBase(displayAmount || 0);
             const note = value("sendNote");
-            if (!name || !acct || !bank || !displayAmount || displayAmount <= 0) {
-                toast("Please fill all fields.", "error");
-                return;
-            }
+            if (!name || !acct || !bank || !displayAmount || displayAmount <= 0) { toast("Please fill all fields.", "error"); return; }
             if (amount > balance) { toast("Insufficient balance.", "error"); return; }
             openPinModal(async () => {
                 const overlay = document.getElementById('pinSpinnerOverlay');
@@ -2871,9 +2869,7 @@
                     updateUI();
                     startPollingTransaction(result.transactionId);
                     setTimeout(() => switchTab('dashboard'), 1000);
-                } else {
-                    showToast(result.message || 'Send failed', 'error');
-                }
+                } else showToast(result.message || 'Send failed', 'error');
             });
         }
 
@@ -2884,10 +2880,7 @@
             const displayAmount = parseFloat(value("receiveAmount"));
             const note = value("receiveNote");
             const amount = toBase(displayAmount || 0);
-            if (!name || !acct || !bank || !displayAmount || displayAmount <= 0) {
-                toast("Please fill all fields.", "error");
-                return;
-            }
+            if (!name || !acct || !bank || !displayAmount || displayAmount <= 0) { toast("Please fill all fields.", "error"); return; }
             const result = await submitTransferRequest('receive', amount, name, bank, acct, note);
             if (result.success) {
                 showToast(result.message, 'success');
@@ -2895,9 +2888,7 @@
                 await loadUserFromBackend();
                 updateUI();
                 setTimeout(() => switchTab('dashboard'), 650);
-            } else {
-                showToast(result.message || 'Receive failed', 'error');
-            }
+            } else showToast(result.message || 'Receive failed', 'error');
         }
 
         // PIN Modal
@@ -2921,11 +2912,7 @@
                 const action = pendingAction;
                 closePinModal();
                 if (typeof action === "function") action();
-            } else {
-                pinBuffer = "";
-                updatePinDots();
-                toast("Incorrect transaction PIN.", "error");
-            }
+            } else { pinBuffer = ""; updatePinDots(); toast("Incorrect transaction PIN.", "error"); }
         }
 
         function updateProfile() {
@@ -2981,17 +2968,12 @@
         function formatCardNumber(input) { return String(input || "").replace(/\D/g, "").slice(0, 19).replace(/(.{4})/g, "$1 ").trim(); }
         function last4(number) { return String(number || "").replace(/\D/g, "").slice(-4) || "0000"; }
 
-        function displayUserName() {
-            const user = currentUser();
-            return (user.name || "").trim() || "User Name";
-        }
-
+        function displayUserName() { const user = currentUser(); return (user.name || "").trim() || "User Name"; }
         function firstAndLastName() {
             const parts = displayUserName().split(/\s+/).filter(Boolean);
             if (parts.length === 1) return parts[0];
             return `${parts[0]} ${parts[parts.length - 1]}`;
         }
-
         function initialsFromName(name) {
             const parts = String(name || "User").trim().split(/\s+/).filter(Boolean);
             const first = parts[0]?.[0] || "U";
@@ -3004,11 +2986,8 @@
             const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
             document.getElementById("greetingText").textContent = `${greeting}, ${displayUserName().split(" ")[0] || "User"}`;
         }
-
         function updateToday() {
-            document.getElementById("todayText").textContent = new Date().toLocaleDateString(undefined, {
-                weekday: "long", month: "long", day: "numeric"
-            });
+            document.getElementById("todayText").textContent = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
         }
 
         function renderCurrencyDropdown() {
@@ -3030,14 +3009,8 @@
             document.getElementById("currencyTriggerCode").textContent = current.code;
         }
 
-        function toggleCurrencyMenu() {
-            document.getElementById("currencyPanel").classList.toggle("open");
-        }
-
-        function closeCurrencyMenu() {
-            document.getElementById("currencyPanel").classList.remove("open");
-        }
-
+        function toggleCurrencyMenu() { document.getElementById("currencyPanel").classList.toggle("open"); }
+        function closeCurrencyMenu() { document.getElementById("currencyPanel").classList.remove("open"); }
         function setCurrency(code) {
             currentCurrency = code;
             localStorage.setItem(STORAGE.currency, code);
@@ -3046,27 +3019,20 @@
             toast(`Currency changed to ${code}`, "success");
         }
 
-        // ---------- MISSING: SWITCH TAB FUNCTION (FIXED) ----------
+        // ---------- CRITICAL: SWITCH TAB ----------
         function switchTab(tab) {
             if (investTabActive && tab !== "invest") onInvestTabDeactivated();
-
             document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
             document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("active"));
-
             const content = document.getElementById(`tab-${tab}`);
             if (content) content.classList.add("active");
-
             const mainButton = document.getElementById(`tabBtn-${tab}`);
             if (mainButton) {
                 mainButton.classList.add("active");
             } else if (tab === "receive" || tab === "transfer") {
                 document.getElementById("tabBtn-send")?.classList.add("active");
             }
-
-            if (tab === "invest") {
-                onInvestTabActivated();
-            }
-
+            if (tab === "invest") { onInvestTabActivated(); }
             updateUI();
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
@@ -3074,15 +3040,10 @@
         // ---------- INIT ----------
         async function init() {
             const savedSparkline = localStorage.getItem(STORAGE.btcSparkline);
-            if (savedSparkline) {
-                try { sparklineData = JSON.parse(savedSparkline); } catch (_) {}
-            }
+            if (savedSparkline) { try { sparklineData = JSON.parse(savedSparkline); } catch (_) {} }
             if (sparklineData.length === 0) {
-                for (let i = 0; i < 60; i++) {
-                    sparklineData.push(BTC_INITIAL_PRICE + (Math.random() - 0.5) * 200);
-                }
+                for (let i = 0; i < 60; i++) sparklineData.push(BTC_INITIAL_PRICE + (Math.random() - 0.5) * 200);
             }
-
             const user = currentUser();
             if (user.id) {
                 await loadUserFromBackend();
@@ -3091,34 +3052,27 @@
                 window.location.href = "login.html";
                 return;
             }
-
             updateGreeting();
             updateToday();
             updateUI();
             startBtcSimulation();
             setInterval(updateGreeting, 60000);
             setInterval(loadUserFromBackend, 15000);
-
             document.addEventListener("click", event => {
                 const menu = document.getElementById("currencyMenu");
                 if (!menu.contains(event.target)) closeCurrencyMenu();
             });
             document.addEventListener("keydown", event => {
-                if (event.key === "Escape") {
-                    closeCurrencyMenu();
-                    closePinModal();
-                }
+                if (event.key === "Escape") { closeCurrencyMenu(); closePinModal(); }
             });
             ["sendAccount", "receiveAccount"].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener("input", () => { el.value = el.value.replace(/\D/g, ""); });
             });
-            window.addEventListener("resize", () => {
-                if (investTabActive) drawSparkline();
-            });
+            window.addEventListener("resize", () => { if (investTabActive) drawSparkline(); });
         }
 
         init();
     </script>
 </body>
-                                                                    </html>
+                    </html>
